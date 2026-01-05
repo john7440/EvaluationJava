@@ -3,6 +3,9 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a user account
+ */
 public class User {
     private Long id;
     private String login;

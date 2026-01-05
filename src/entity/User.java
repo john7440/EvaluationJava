@@ -61,5 +61,10 @@ public class User {
         this.orders = orders;
     }
 
+    public void addOrder(Order order){
+        this.orders.add(order);
+        order.setUser(this);
+    }
+
 
 }

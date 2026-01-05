@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents a shopping cart
+ */
 public class Cart {
     private Long id;
     private Date createdDate;

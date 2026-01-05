@@ -80,4 +80,9 @@ public class Client {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public String toString() {
+        return "Client:" + firstName + " " + lastName + "\nemail: " + email + "\naddress: " + address + "\nphone:  " + phoneNumber;
+    }
 }

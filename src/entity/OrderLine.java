@@ -1,5 +1,8 @@
 package entity;
 
+/**
+ * Represents a line in an order
+ */
 public class OrderLine {
     private Long id;
     private int quantity;

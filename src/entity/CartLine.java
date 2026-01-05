@@ -1,5 +1,8 @@
 package entity;
 
+/**
+ * Represents a line in a shopping cart
+ */
 public class CartLine {
     private Long id;
     private int quantity;

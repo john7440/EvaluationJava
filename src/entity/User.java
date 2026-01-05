@@ -66,5 +66,9 @@ public class User {
         order.setUser(this);
     }
 
+    @Override
+    public String toString() {
+        return "User Id: " + id + "\n" + "Login: " + login;
+    }
 
 }

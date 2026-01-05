@@ -48,4 +48,9 @@ public class CartLine {
     public void setCourse(Course course) {
         this.course = course;
     }
+
+    @Override
+    public String toString(){
+        return "Cartline n°" + id + ":\nquantity: " + quantity +"\ncourse: " + course;
+    }
 }

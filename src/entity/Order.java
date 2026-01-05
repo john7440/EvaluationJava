@@ -73,5 +73,13 @@ public class Order {
         this.orderLines = orderLines;
     }
 
+    public void addOrderLine(OrderLine orderLine){
+        this.orderLines.add(orderLine);
+        orderLine.setOrder(this);
+    }
     
+    public void calculateTotalAmount(){
+        this.totalAmount = orderLines.stream()
+                .mapToDouble(line -> line.getUnitPrice() * line.getQuantity()).sum();
+    }
 }

@@ -21,4 +21,35 @@ public class Cart {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<CartLine> getCartLines() {
+        return cartLines;
+    }
+
+    public void setCartLines(List<CartLine> cartLines) {
+        this.cartLines = cartLines;
+    }
 }

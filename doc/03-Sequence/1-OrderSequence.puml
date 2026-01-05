@@ -1,0 +1,36 @@
+@startuml
+actor User
+participant "System" as Sys
+database "Database" as DB
+
+activate User
+User -> Sys : placeOrder()
+activate Sys
+
+Sys -> DB : getCart()
+activate DB
+DB --> Sys : cart
+deactivate DB
+
+alt cart is empty
+    Sys --> User : error("Cart is empty")
+else cart is not empty
+    Sys --> User : requestClientInformation()
+    User -> Sys : submitClientInformation()
+
+    Sys -> DB : createOrder()
+    activate DB
+    DB --> Sys : order
+    deactivate DB
+
+    Sys -> DB : clearCart()
+    activate DB
+    DB --> Sys : cartCleared
+    deactivate DB
+
+    Sys --> User : orderConfirmation()
+end
+
+deactivate Sys
+
+@enduml

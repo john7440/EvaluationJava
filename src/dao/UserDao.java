@@ -4,6 +4,9 @@ import config.DatabaseConfig;
 import entity.User;
 
 import java.io.IOException;
+import java.sql.*;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -17,5 +20,62 @@ public class UserDao implements IDao<User>{
     private UserDao() throws IOException, ClassNotFoundException {
         this.dbConfig = DatabaseConfig.getInstance();
     }
+
+    public static UserDao getInstance() throws IOException, ClassNotFoundException {
+        if (instance == null) {
+            instance = new UserDao();
+        }
+        return instance;
+    }
+
+    @Override
+    public User save(User user) throws SQLException {
+        String sql = "INSERT INTO user(u_login, u_password) VALUES (?, ?)";
+
+        try (Connection connect = dbConfig.getConnection();
+             PreparedStatement statement = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet rs =  statement.getGeneratedKeys()){
+                    if (rs.next()) {
+                        user.setId(rs.getLong(1));
+                        LOGGER.log(Level.INFO, "User saved with id " + user.getId());
+                    }
+                }
+            }
+            return user;
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error saving user", e);
+            throw new SQLException("Failed to save user", e);
+        }
+
+    }
+
+    @Override
+    public User update(User entity) {
+        return null;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        return false;
+    }
+
+    @Override
+    public User findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return List.of();
+    }
+
 
 }

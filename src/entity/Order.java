@@ -88,7 +88,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order n°" + id + ":\nclient: " + (client != null ? client.getFirstName()) + "\ndate: " + orderDate + "\ntotal: " + totalAmount;
+        return "Order n°" + id + ":\nclient: " + (client != null ? client.getFirstName() + client.getLastName() : "null") + "\ndate: " + orderDate + "\ntotal: " + totalAmount;
     }
 
 }

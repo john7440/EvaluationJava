@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class UserDao implements IDao<User>{
     private static final Logger LOGGER = Logger.getLogger(UserDao.class.getName());
     private static UserDao instance;
-    private DatabaseConfig dbConfig;
+    private final DatabaseConfig dbConfig;
 
     private UserDao() throws IOException, ClassNotFoundException {
         this.dbConfig = DatabaseConfig.getInstance();
@@ -52,9 +52,9 @@ public class UserDao implements IDao<User>{
 
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error saving user", e);
-            throw new SQLException("Failed to save user", e);
-        }
 
+        }
+        return user;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class UserDao implements IDao<User>{
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll() throws  SQLException {
         return List.of();
     }
 

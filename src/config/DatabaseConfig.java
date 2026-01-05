@@ -2,6 +2,9 @@ package config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,4 +46,16 @@ public class DatabaseConfig {
     public String getProperty(String key) {
         return properties.getProperty(key);
     }
+    
+    public Connection getConnection() throws SQLException {
+        String url = properties.getProperty("db.url");
+        String user = properties.getProperty("db.user");
+        String password = properties.getProperty("db.password");
+
+        Connection connection = DriverManager.getConnection(url, user, password);
+        LOGGER.log(Level.FINE, "Database connection established");
+        return connection;
+    }
+
+
 }

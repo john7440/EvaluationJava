@@ -2,6 +2,7 @@ package dao;
 
 import config.DatabaseConfig;
 import entity.Cart;
+import entity.CartLine;
 import entity.User;
 
 import java.io.IOException;
@@ -98,5 +99,32 @@ public class CartDao implements IDao<Cart> {
             }
             return null;
         }
+    }
+
+    public CartLine addCartLine(CartLine cartLine) {
+        String sql = "INSERT INTO cartLine (car_quantity, id_Cart, id_Course) VALUES (?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE car_quantity = car_quantity + ?";
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setInt(1, cartLine.getQuantity());
+            stmt.setLong(2, cartLine.getCart().getId());
+            stmt.setLong(3, cartLine.getCourse().getId());
+            stmt.setInt(4, cartLine.getQuantity());
+
+            stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    cartLine.setId(rs.getLong(1));
+                }
+            }
+            LOGGER.log(Level.INFO, "CartLine added/updated");
+            return cartLine;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error adding cart line", e);
+        }
+        return null;
     }
 }

@@ -19,6 +19,13 @@ public class ClientDao implements IDao<Client> {
     private ClientDao() throws IOException, ClassNotFoundException {
         this.dbConfig = DatabaseConfig.getInstance();
     }
+
+    public static ClientDao getInstance() throws IOException, ClassNotFoundException {
+        if (instance == null) {
+            instance = new ClientDao();
+        }
+        return instance;
+    }
     
     @Override
     public Client save(Client entity) throws SQLException {

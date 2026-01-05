@@ -77,9 +77,15 @@ public class Order {
         this.orderLines.add(orderLine);
         orderLine.setOrder(this);
     }
-    
+
     public void calculateTotalAmount(){
         this.totalAmount = orderLines.stream()
                 .mapToDouble(line -> line.getUnitPrice() * line.getQuantity()).sum();
     }
+
+    @Override
+    public String toString() {
+        return "Order n°" + id + ":\nclient: " + (client != null ? client.getFirstName()) + "\ndate: " + orderDate + "\ntotal: " + totalAmount;
+    }
+
 }

@@ -66,4 +66,9 @@ public class Course {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Course: " + name + "\nduration: " + duration + "min\ntype: " + type + "\nprice: " + price + "€";
+    }
 }

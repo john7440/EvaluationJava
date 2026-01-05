@@ -87,4 +87,27 @@ public class CourseDao implements IDao<Course>{
 
         return courses;
     }
+
+    public List<Course> findByKeyword(String keyword) throws SQLException {
+        String sql = "SELECT * FROM courses WHERE co_name LIKE ? OR co_description LIKE ? ";
+        List<Course> courses = new ArrayList<>();
+
+        try(Connection connect = dbConfig.getConnection();
+        PreparedStatement statement = connect.prepareStatement(sql)){
+
+            String searchPattern = "%" + keyword + "%";
+            statement.setString(1, searchPattern);
+            statement.setString(2, searchPattern);
+
+            try (ResultSet rs = statement.executeQuery()){
+                while (rs.next()) {
+                    courses.add(mapResultSetToCourse(rs));
+                }
+            }
+            LOGGER.log(Level.INFO, "Found " + courses.size() + " courses with keyword: " + keyword);
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error finding courses by keyword", e);
+        }
+        return courses;
+    }
 }

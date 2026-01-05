@@ -1,0 +1,118 @@
+
+CREATE DATABASE IF NOT EXISTS training_sales_db
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+
+-- Création de l'utilisateur avec mot de passe
+
+CREATE USER IF NOT EXISTS 'training_user'@'localhost' 
+IDENTIFIED BY 'Training@2026';
+
+GRANT ALL PRIVILEGES ON training_sales_db.* TO 'training_user'@'localhost';
+FLUSH PRIVILEGES;
+
+
+-- Utiliser la base de données
+
+USE training_sales_db;
+
+
+-- Création des tables
+
+-- Table User
+CREATE TABLE User (
+    id_User BIGINT AUTO_INCREMENT PRIMARY KEY,
+    u_login VARCHAR(50) NOT NULL UNIQUE,
+    u_password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Table Client
+CREATE TABLE Client (
+    id_Client BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cl_firstName VARCHAR(100) NOT NULL,
+    cl_lastName VARCHAR(100) NOT NULL,
+    cl_email VARCHAR(150) NOT NULL UNIQUE,
+    cl_address VARCHAR(255),
+    cl_phoneNumber VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Table Course
+CREATE TABLE Course (
+    id_Course BIGINT AUTO_INCREMENT PRIMARY KEY,
+    co_name VARCHAR(200) NOT NULL,
+    co_description TEXT,
+    co_duration INT NOT NULL,
+    co_type VARCHAR(20) NOT NULL CHECK (co_type IN ('PRESENTIEL', 'DISTANCIEL')),
+    co_price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Table Cart
+CREATE TABLE Cart (
+    id_Cart BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ca_createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_User BIGINT NOT NULL,
+    FOREIGN KEY (id_User) REFERENCES User(id_User) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Table Order
+CREATE TABLE `Order` (
+    id_Order BIGINT AUTO_INCREMENT PRIMARY KEY,
+    o_orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    o_totalAmount DECIMAL(10, 2) NOT NULL,
+    id_User BIGINT NOT NULL,
+    id_Client BIGINT NOT NULL,
+    FOREIGN KEY (id_User) REFERENCES User(id_User) ON DELETE RESTRICT,
+    FOREIGN KEY (id_Client) REFERENCES Client(id_Client) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+-- Table CartLine (association Cart-Course)
+CREATE TABLE CartLine (
+    id_CartLine BIGINT AUTO_INCREMENT PRIMARY KEY,
+    car_quantity INT NOT NULL DEFAULT 1,
+    id_Cart BIGINT NOT NULL,
+    id_Course BIGINT NOT NULL,
+    FOREIGN KEY (id_Cart) REFERENCES Cart(id_Cart) ON DELETE CASCADE,
+    FOREIGN KEY (id_Course) REFERENCES Course(id_Course) ON DELETE CASCADE,
+    UNIQUE KEY unique_cart_course (id_Cart, id_Course)
+) ENGINE=InnoDB;
+
+-- Table OrderLine (association Order-Course)
+CREATE TABLE OrderLine (
+    id_OrderLine BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ol_quantity INT NOT NULL DEFAULT 1,
+    ol_unitPrice DECIMAL(10, 2) NOT NULL,
+    id_Order BIGINT NOT NULL,
+    id_Course BIGINT NOT NULL,
+    FOREIGN KEY (id_Order) REFERENCES `Order`(id_Order) ON DELETE CASCADE,
+    FOREIGN KEY (id_Course) REFERENCES Course(id_Course) ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+
+-- Création des index pour optimiser les recherches
+
+CREATE INDEX idx_course_type ON Course(co_type);
+CREATE INDEX idx_course_name ON Course(co_name);
+CREATE INDEX idx_user_login ON User(u_login);
+CREATE INDEX idx_client_email ON Client(cl_email);
+CREATE INDEX idx_order_date ON `Order`(o_orderDate);
+
+
+-- Insertion de données de test
+
+INSERT INTO Course (co_name, co_description, co_duration, co_type, co_price) VALUES
+('Java Avancé', 'Formation approfondie sur Java et Spring', 5, 'PRESENTIEL', 1500.00),
+('Python Data Science', 'Analyse de données avec Python', 3, 'DISTANCIEL', 900.00),
+('DevOps Kubernetes', 'Orchestration de conteneurs', 4, 'PRESENTIEL', 1200.00),
+('React & TypeScript', 'Développement frontend moderne', 3, 'DISTANCIEL', 850.00);
+
+
+-- Affichage des informations de connexion
+
+SELECT 'Base de données créée avec succès!' AS Status;
+SELECT 'Utilisateur: training_user' AS Info;
+SELECT 'Mot de passe: Training@2026' AS Info;
+SELECT 'Base de données: training_sales_db' AS Info;

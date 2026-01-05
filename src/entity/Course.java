@@ -1,5 +1,8 @@
 package entity;
 
+/**
+ * Represents a training course
+ */
 public class Course {
     private Long id;
     private String name;

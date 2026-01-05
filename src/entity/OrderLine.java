@@ -58,4 +58,9 @@ public class OrderLine {
     public void setCourse(Course course) {
         this.course = course;
     }
+
+    @Override
+    public String toString() {
+        return "Orderline n°" + id + ":\nquantity: " + quantity + "\nunitPrice: " + unitPrice;
+    }
 }

@@ -3,6 +3,9 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a client for whom orders are placed
+ */
 public class Client {
     private Long id;
     private String firstName;

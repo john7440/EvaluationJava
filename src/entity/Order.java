@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents an order placed by a user for a client
+ */
 public class Order {
     private Long id;
     private Date orderDate;

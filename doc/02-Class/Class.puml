@@ -1,0 +1,53 @@
+@startuml
+
+class Course {
+  - name : String
+  - description : String
+  - duration : int
+  - type : String
+  - price : double
+}
+
+class User {
+  - login : String
+  - password : String
+}
+
+class Client {
+  - firstName : String
+  - lastName : String
+  - email : String
+  - address : String
+  - phoneNumber : String
+}
+
+class Cart {
+  - createdDate : Date
+}
+
+class CartLine {
+  - quantity : int
+}
+
+class Order {
+  - orderDate : Date
+  - totalAmount : double
+}
+
+class OrderLine {
+  - quantity : int
+  - unitPrice : double
+}
+
+User "1" -- "0..1" Cart : possess >
+User "1" -- "*" Order : achieves >
+
+Client "1" -- "*" Order : concerns
+
+Cart "1" -- "*" CartLine : contains >
+Course "1" -- "*" CartLine : appears in >
+
+Order "1" -- "*" OrderLine : contains >
+Course "1" -- "*" OrderLine : ordered >
+
+@enduml

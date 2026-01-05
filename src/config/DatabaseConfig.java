@@ -46,7 +46,7 @@ public class DatabaseConfig {
     public String getProperty(String key) {
         return properties.getProperty(key);
     }
-    
+
     public Connection getConnection() throws SQLException {
         String url = properties.getProperty("db.url");
         String user = properties.getProperty("db.user");

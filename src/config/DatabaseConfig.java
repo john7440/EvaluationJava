@@ -14,11 +14,18 @@ public class DatabaseConfig {
     private static DatabaseConfig instance;
     private Properties properties;
 
-    private DatabaseConfig() {
+    private DatabaseConfig() throws IOException, ClassNotFoundException {
         loadProperties();
     }
 
-    private void loadProperties() {
+    public static DatabaseConfig getInstance() throws IOException, ClassNotFoundException {
+        if (instance == null) {
+            instance = new DatabaseConfig();
+        }
+        return instance;
+    }
+
+    private void loadProperties() throws IOException, ClassNotFoundException {
         properties = new Properties();
         try (InputStream input = getClass().getClassLoader()
                 .getResourceAsStream("database.properties")) {
@@ -26,12 +33,14 @@ public class DatabaseConfig {
                 LOGGER.log(Level.SEVERE, "Unable to find database.properties");
                 throw new RuntimeException("Configuration file not found");
             }
+            assert properties != null;
             properties.load(input);
             Class.forName(properties.getProperty("db.driver"));
             LOGGER.log(Level.INFO, "Database configuration loaded successfully");
-        } catch (IOException | ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Error loading database configuration", e);
-            throw new RuntimeException("Failed to load database configuration", e);
         }
+    }
+
+    public String getProperty(String key) {
+        return properties.getProperty(key);
     }
 }

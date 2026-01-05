@@ -4,8 +4,9 @@ import config.DatabaseConfig;
 import entity.Cart;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -28,8 +29,27 @@ public class CartDao implements IDao<Cart> {
     }
 
     @Override
-    public Cart save(Cart entity) throws SQLException {
-        return null;
+    public Cart save(Cart cart) throws SQLException {
+        String sql = "INSERT INTO cart(ca_createDate, id_User) VALUES (?, ?)";
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setTimestamp(1, new Timestamp(cart.getCreatedDate().getTime()));
+            stmt.setLong(2, cart.getUser().getId());
+
+            stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    cart.setId(rs.getLong(1));
+                    LOGGER.log(Level.INFO, "Cart created with ID: " + cart.getId());
+                }
+            }
+            return cart;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error saving cart", e);
+        }
     }
 
     @Override

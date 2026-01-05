@@ -2,6 +2,7 @@ package dao;
 
 import config.DatabaseConfig;
 import entity.Cart;
+import entity.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -70,5 +71,32 @@ public class CartDao implements IDao<Cart> {
     @Override
     public List<Cart> findAll() throws SQLException {
         return List.of();
+    }
+
+    private Cart mapResultSetToCart(ResultSet rs) throws SQLException {
+        Cart cart = new Cart();
+        cart.setId(rs.getLong("id_Cart"));
+        cart.setCreatedDate(rs.getTimestamp("ca_createdDate"));
+        return cart;
+    }
+
+    public Cart findByUserId(Long userId) throws SQLException {
+        String sql = "SELECT * FROM cart WHERE id_User = ?";
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Cart cart = mapResultSetToCart(rs);
+                    cart.setCartLines(findCartLinesByCartId(cart.getId()));
+                    return cart;
+                }
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error finding cart by user id", e);
+            }
+            return null;
+        }
     }
 }

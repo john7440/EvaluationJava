@@ -61,8 +61,30 @@ public class CourseDao implements IDao<Course>{
                 courses.add(mapResultSetToCourse(rs));
             }
         } catch (SQLException e){
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Error finding all courses", e);
         }
+        return courses;
+    }
+
+    public List<Course> findByType(String type) throws SQLException {
+        String sql = "SELECT * FROM courses WHERE co_type = ?";
+        List<Course> courses = new ArrayList<>();
+
+        try(Connection connect = dbConfig.getConnection();
+            PreparedStatement statement = connect.prepareStatement(sql)){
+
+            statement.setString(1, type);
+
+            try (ResultSet rs = statement.executeQuery()){
+                while (rs.next()) {
+                    courses.add(mapResultSetToCourse(rs));
+                }
+            }
+            LOGGER.log(Level.INFO, "Found " + courses.size() + " courses of type: " + type);
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error finding courses by type", e);
+        }
+
         return courses;
     }
 }

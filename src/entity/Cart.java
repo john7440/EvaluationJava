@@ -52,7 +52,7 @@ public class Cart {
     public void setCartLines(List<CartLine> cartLines) {
         this.cartLines = cartLines;
     }
-    
+
     public void addCartLine(CartLine cartLine){
         this.cartLines.add(cartLine);
         cartLines.setCart(this);
@@ -60,5 +60,10 @@ public class Cart {
 
     public double getTotalAmount() {
         return cartLines.stream().mapToDouble(line -> line.getCourse().getPrice() * line.getQuantity()).sum();
+    }
+
+    @Override
+    public String toString() {
+        return "Cart n°: " + id + "\nDate: " +  createdDate + "\nCartLines: " + cartLines;
     }
 }

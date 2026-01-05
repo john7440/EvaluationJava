@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+
+actor Visiteur
+actor Utilisateur
+
+rectangle "Système de vente de formations" {
+
+ usecase "Se connecter" as AUTH
+
+ usecase "Consulter les formations" as UC1
+ usecase "Rechercher des formations" as UC2
+
+ usecase "Créer un compte" as UC3
+
+ usecase "Gérer le panier" as UC5
+ usecase "Passer commande" as UC6
+
+}
+
+Visiteur -- UC1
+Visiteur -- UC2
+Visiteur -- UC3
+
+Utilisateur -|> Visiteur
+
+Utilisateur -- UC5
+Utilisateur -- UC6
+
+UC5 ..> AUTH
+UC6 ..> AUTH
+
+@enduml

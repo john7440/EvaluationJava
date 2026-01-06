@@ -39,7 +39,7 @@ public class OrderBusiness {
                 LOGGER.log(Level.WARNING, "Cannot create order: cart is empty!");
                 return null;
         }
-        
+
         //check if client exists
         Client existingClient = clientDao.findByEmail(client.getEmail());
         if (existingClient != null) {
@@ -76,4 +76,14 @@ public class OrderBusiness {
         }
         return order;
     }
+
+    /**
+     * Find order by ID
+     * @param orderId order ID
+     * @return order or null if not found
+     */
+    public Order findById(Long orderId) {
+        return orderDao.findById(orderId);
+    }
+
 }

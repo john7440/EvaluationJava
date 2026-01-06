@@ -151,6 +151,9 @@ public class MainApp {
             case 7:
                 placeOrder();
                 break;
+            case 8:
+                viewMyOrders();
+                break;
             case 9:
                 logout();
                 break;
@@ -370,6 +373,27 @@ public class MainApp {
         }
     }
 
+    /**
+     * View user's orders
+     */
+    private void viewMyOrders() throws SQLException{
+        List<Order> orders = orderBusiness.findOrdersByUserId(currentUser.getId());
+
+        if (orders.isEmpty()) {
+            System.out.print("\nEnter order ID to view details (or 0 to go back): ");
+
+            Long orderId = readLong();
+
+            if (orderId > 0) {
+                Order order = orderBusiness.findById(orderId);
+                if (order != null) {
+                    orderBusiness.displayOrderDetails(order);
+                } else {
+                    System.out.println("\nOrder not found!");
+                }
+            }
+        }
+    }
 
     //--------------------------------------------------------------------
     //verifications methods

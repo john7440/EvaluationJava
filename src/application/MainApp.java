@@ -148,6 +148,9 @@ public class MainApp {
             case 6:
                 removeCourseFromCart();
                 break;
+            case 7:
+                placeOrder();
+                break;
             case 9:
                 logout();
                 break;
@@ -320,6 +323,53 @@ public class MainApp {
             System.out.println("\nFailed to remove course from cart! Please try again");
         }
     }
+
+    //--------------------------------------------------
+    //managing orders
+
+    /**
+     * Place an order
+     */
+    private void placeOrder() throws SQLException, ClassNotFoundException {
+        currentCart = cartBusiness.getOrCreateCart(currentUser);
+
+        if (cartBusiness.isCartEmpty(currentCart)) {
+            System.out.println("\nYour cart is empty! Add courses before placing an order!");
+            return;
+        }
+
+        cartBusiness.displayCart(currentCart);
+
+        //create client
+        System.out.println("\n========== Client Information ==========");
+        System.out.print("First name: ");
+        String firstName = scanner.nextLine();
+
+        System.out.print("Last name: ");
+        String lastName = scanner.nextLine();
+
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Address: ");
+        String address = scanner.nextLine();
+
+        System.out.print("Phone number: ");
+        String phoneNumber = scanner.nextLine();
+
+        Client client = new Client(firstName, lastName, email, address, phoneNumber);
+
+        Order order = orderBusiness.createOrder(currentUser, currentCart, client);
+
+        if (order != null) {
+            System.out.println("\nOrder placed successfully!");
+            orderBusiness.displayOrderDetails(order);
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+        } else {
+            System.out.println("\nFailed to place order. Please try again.");
+        }
+    }
+
 
     //--------------------------------------------------------------------
     //verifications methods

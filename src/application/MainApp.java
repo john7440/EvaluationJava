@@ -40,6 +40,11 @@ public class MainApp {
     //----------------------------------------------------------------------------
     //main
 
+    //users for tests:
+    // admin : admin123
+    // testuser : password
+    // john.doe : test2026
+
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
         MainApp app = new MainApp();
         app.run();
@@ -50,7 +55,7 @@ public class MainApp {
     /**
      * Main application loop
      */
-    public void run() throws SQLException, ClassNotFoundException {
+    public void run() throws SQLException {
         System.out.println("---Welcome to Training Sales Application---");
 
         boolean running = true;
@@ -72,7 +77,7 @@ public class MainApp {
     /**
      * Display menu for visitors (non-authenticated users)
      */
-    private boolean displayVisitorMenu() throws SQLException, ClassNotFoundException {
+    private boolean displayVisitorMenu() throws SQLException {
         System.out.println("\n========== VISITOR MENU ==========");
         System.out.println("1. View all courses");
         System.out.println("2. Search courses by keyword");
@@ -114,7 +119,7 @@ public class MainApp {
     /**
      * Display menu for authenticated users
      */
-    private boolean displayUserMenu() throws SQLException, ClassNotFoundException {
+    private boolean displayUserMenu() throws SQLException {
         System.out.println("\n========== USER MENU (Logged in as: " + currentUser.getLogin() + ") ==========");
         System.out.println("1. View all courses");
         System.out.println("2. Search courses by keyword");
@@ -173,7 +178,7 @@ public class MainApp {
     /**
      * View all available courses
      */
-    private void viewAllCourses() throws SQLException, ClassNotFoundException {
+    private void viewAllCourses(){
         List<Course> courses = courseBusiness.getAllCourses();
         courseBusiness.displayCourseList(courses);
     }
@@ -181,7 +186,7 @@ public class MainApp {
     /**
      * Search courses by keyword
      */
-    private void searchCoursesByKeyword() throws SQLException, ClassNotFoundException {
+    private void searchCoursesByKeyword() throws SQLException {
         System.out.print("\nEnter search keyword: ");
         String keyword = scanner.nextLine();
 
@@ -192,7 +197,7 @@ public class MainApp {
     /**
      * Filter courses by type (PRESENTIEL or DISTANCIEL)
      */
-    public void filterCoursesByType() throws SQLException, ClassNotFoundException {
+    public void filterCoursesByType() throws SQLException {
         System.out.println("\nSelect course type:");
         System.out.println("1. PRESENTIEL");
         System.out.println("2. DISTANCIEL");
@@ -257,7 +262,7 @@ public class MainApp {
      */
     private void logout()  {
         if (currentUser != null) {
-            LOGGER.log(Level.INFO, "User logged out: " + currentUser.getLogin());
+            LOGGER.log(Level.INFO, () ->"User logged out: " + currentUser.getLogin());
         }
         currentUser = null;
         currentCart = null;
@@ -278,7 +283,7 @@ public class MainApp {
     /**
      * Add a course to cart
      */
-    private void addCourseToCart() throws SQLException, ClassNotFoundException {
+    private void addCourseToCart() throws SQLException {
         viewAllCourses();
 
         System.out.print("\nEnter course ID to add to cart: ");

@@ -18,12 +18,12 @@ import java.util.logging.Logger;
  */
 public class MainApp {
     private static final Logger LOGGER = Logger.getLogger(MainApp.class.getName());
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
-    private UserBusiness userBusiness;
-    private CourseBusiness courseBusiness;
-    private CartBusiness cartBusiness;
-    private OrderBusiness orderBusiness;
+    private final UserBusiness userBusiness;
+    private final CourseBusiness courseBusiness;
+    private final CartBusiness cartBusiness;
+    private final OrderBusiness orderBusiness;
 
     private User currentUser;
     private Cart currentCart;
@@ -43,7 +43,7 @@ public class MainApp {
         app.run();
     }
 
-    //---------------------------------------------------------------------------
+    //-----------------------------------------------
 
     /**
      * Main application loop
@@ -105,6 +105,46 @@ public class MainApp {
                 System.out.println("Invalid option. Please try again.");
         }
         return true;
+    }
+
+    //-----------------------------------------
+
+    /**
+     * Display menu for authenticated users
+     */
+    private boolean displayUserMenu() throws SQLException, ClassNotFoundException {
+        System.out.println("\n========== USER MENU (Logged in as: " + currentUser.getLogin() + ") ==========");
+        System.out.println("1. View all courses");
+        System.out.println("2. Search courses by keyword");
+        System.out.println("3. Filter courses by type");
+        System.out.println("4. View cart");
+        System.out.println("5. Add course to cart");
+        System.out.println("6. Remove course from cart");
+        System.out.println("7. Place order");
+        System.out.println("8. View my orders");
+        System.out.println("9. Logout");
+        System.out.println("0. Exit");
+        System.out.println("====================================================================");
+        System.out.print("Choose an option: ");
+
+        int choice = readInt();
+
+        switch (choice) {
+            case 1:
+                viewAllCourses();
+                break;
+            case 2:
+                searchCoursesByKeyword();
+                break;
+            case 3:
+                filterCoursesByType();
+                break;
+            case 0:
+                return false;
+            default:
+                System.out.println("Invalid option. Please try again.");
+        }
+        return  true;
     }
 
     // ----------------------------------------------------------

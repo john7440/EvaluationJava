@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class CartBusiness {
     private static final Logger LOGGER = Logger.getLogger(CartBusiness.class.getName());
     private final CartDao cartDao;
-    private CourseDao courseDao;
+    private final CourseDao courseDao;
 
     public CartBusiness() throws IOException, ClassNotFoundException {
         this.cartDao = DaoFactory.getCartDao();
@@ -115,4 +115,39 @@ public class CartBusiness {
         return cleared;
     }
 
+    /**
+     * Check if the cart is empty
+     * @param cart cart to check
+     * @return true if cart is empty
+     */
+    public boolean isCartEmpty(Cart cart) {
+        return cart == null || cart.getCartLines().isEmpty();
+    }
+
+    /**
+     * Display cart content
+     * @param cart cart to display
+     */
+    public void displayCart(Cart cart) {
+        if (isCartEmpty(cart)) {
+            System.out.println("Cart is empty!");
+            return;
+        }
+
+        System.out.println("\n========== Your Cart ==========");
+        for (CartLine line : cart.getCartLines()) {
+            Course course = line.getCourse();
+            double lineTotal = course.getPrice() * line.getQuantity();
+            System.out.printf("[%d] %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
+                    line.getId(),
+                    course.getName(),
+                    line.getQuantity(),
+                    course.getPrice(),
+                    lineTotal);
+        }
+        System.out.println("--------------------------------");
+        System.out.printf("TOTAL: %.2f €%n", cart.getTotalAmount());
+        System.out.println("================================\n");
+        }
 }
+

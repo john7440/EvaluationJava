@@ -3,7 +3,6 @@ package business;
 import dao.CourseDao;
 import dao.DaoFactory;
 import entity.Course;
-import entity.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -23,7 +22,7 @@ public class CourseBusiness {
      * Get all available courses
      * @return list of all courses
      */
-    public List<Course> getAllCourses() throws SQLException, ClassNotFoundException {
+    public List<Course> getAllCourses() {
         return courseDao.findAll();
     }
 
@@ -32,7 +31,7 @@ public class CourseBusiness {
      * @param keyword search keyword
      * @return list of matching courses
      */
-    public List<Course> searchByKeyword(String keyword) throws SQLException, ClassNotFoundException {
+    public List<Course> searchByKeyword(String keyword) throws SQLException {
         if (keyword == null || keyword.trim().isEmpty()) {
             LOGGER.log(Level.WARNING, "Search keyword is null or empty");
             return getAllCourses();
@@ -48,7 +47,7 @@ public class CourseBusiness {
      * @param type course type
      * @return list of courses of specified type
      */
-    public List<Course> filterByType(String type) throws SQLException, ClassNotFoundException {
+    public List<Course> filterByType(String type) throws SQLException{
         if (type == null || (!type.equalsIgnoreCase("PRESENTIEL") && !type.equalsIgnoreCase("DISTANCIEL"))) {
             LOGGER.log(Level.WARNING, () -> "Invalid course type " + type);
             return getAllCourses();

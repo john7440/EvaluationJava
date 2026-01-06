@@ -381,18 +381,22 @@ public class MainApp {
     private void viewMyOrders() throws SQLException{
         List<Order> orders = orderBusiness.findOrdersByUserId(currentUser.getId());
 
-        if (orders.isEmpty()) {
-            System.out.print("\nEnter order ID to view details (or 0 to go back): ");
+        if (orders == null || orders.isEmpty()) {
+            System.out.println("You have no orders yet.\n");
+            return;
+        }
 
-            Long orderId = readLong();
+        orderBusiness.displayOrderList(orders);
 
-            if (orderId > 0) {
-                Order order = orderBusiness.findById(orderId);
-                if (order != null) {
-                    orderBusiness.displayOrderDetails(order);
-                } else {
-                    System.out.println("\nOrder not found!");
-                }
+        System.out.print("\nEnter order ID to view details (or 0 to go back): ");
+        Long orderId = readLong();
+
+        if (orderId != null && orderId > 0) {
+            Order order = orderBusiness.findById(orderId);
+            if (order != null) {
+                orderBusiness.displayOrderDetails(order);
+            } else {
+                System.out.println("\nOrder not found.");
             }
         }
     }

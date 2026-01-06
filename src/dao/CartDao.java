@@ -33,8 +33,8 @@ public class CartDao implements IDao<Cart> {
     }
 
     @Override
-    public Cart save(Cart cart) throws SQLException {
-        String sql = "INSERT INTO cart(ca_createDate, id_User) VALUES (?, ?)";
+    public Cart save(Cart cart){
+        String sql = "INSERT INTO cart(ca_createdDate, id_User) VALUES (?, ?)";
 
         try (Connection conn = dbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -47,7 +47,7 @@ public class CartDao implements IDao<Cart> {
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     cart.setId(rs.getLong(1));
-                    LOGGER.log(Level.INFO, "Cart created with ID: " + cart.getId());
+                    LOGGER.log(Level.INFO, () ->"Cart created with ID: " + cart.getId());
                 }
             }
             return cart;
@@ -73,7 +73,7 @@ public class CartDao implements IDao<Cart> {
     }
 
     @Override
-    public List<Cart> findAll() throws SQLException {
+    public List<Cart> findAll() {
         return List.of();
     }
 
@@ -104,7 +104,7 @@ public class CartDao implements IDao<Cart> {
         }
     }
 
-    public CartLine addCartLine(CartLine cartLine) {
+    public void addCartLine(CartLine cartLine) {
         String sql = "INSERT INTO cartLine (car_quantity, id_Cart, id_Course) VALUES (?, ?, ?) " +
                 "ON DUPLICATE KEY UPDATE car_quantity = car_quantity + ?";
 
@@ -124,11 +124,9 @@ public class CartDao implements IDao<Cart> {
                 }
             }
             LOGGER.log(Level.INFO, "CartLine added/updated");
-            return cartLine;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error adding cart line", e);
         }
-        return null;
     }
 
     public boolean removeCartLine(Long cartLineId) {
@@ -139,12 +137,13 @@ public class CartDao implements IDao<Cart> {
 
             stmt.setLong(1, cartLineId);
             int rowsAffected = stmt.executeUpdate();
-            LOGGER.log(Level.INFO, "CartLine removed: " + cartLineId);
+            LOGGER.log(Level.INFO, () ->"CartLine removed: " + cartLineId);
             return rowsAffected > 0;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error removing cart line", e);
-            throw new RuntimeException("Failed to remove cart line", e);
+
         }
+        return false;
     }
 
     public boolean clearCart(Long cartId) {
@@ -155,12 +154,12 @@ public class CartDao implements IDao<Cart> {
 
             stmt.setLong(1, cartId);
             stmt.executeUpdate();
-            LOGGER.log(Level.INFO, "Cart cleared: " + cartId);
+            LOGGER.log(Level.INFO, () -> "Cart cleared: " + cartId);
             return true;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error clearing cart", e);
-            throw new RuntimeException("Failed to clear cart", e);
         }
+        return false;
     }
 
     private List<CartLine> findCartLinesByCartId(Long cartId) {

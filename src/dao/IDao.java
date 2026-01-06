@@ -12,5 +12,5 @@ public interface IDao<T>{
     T update(T entity);
     boolean delete(Long id);
     T findById(Long id);
-    List<T> findAll();
+    List<T> findAll() throws SQLException;
 }

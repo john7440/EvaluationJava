@@ -3,10 +3,12 @@ package dao;
 import config.DatabaseConfig;
 import entity.Cart;
 import entity.CartLine;
-import entity.User;
+import entity.Course;
+
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +19,7 @@ import java.util.logging.Logger;
 public class CartDao implements IDao<Cart> {
     private static final Logger LOGGER = Logger.getLogger(CartDao.class.getName());
     private static CartDao instance;
-    private DatabaseConfig dbConfig;
+    private final DatabaseConfig dbConfig;
 
     private CartDao() throws IOException, ClassNotFoundException {
         this.dbConfig = DatabaseConfig.getInstance();
@@ -52,6 +54,7 @@ public class CartDao implements IDao<Cart> {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error saving cart", e);
         }
+        return null;
     }
 
     @Override
@@ -82,7 +85,7 @@ public class CartDao implements IDao<Cart> {
     }
 
     public Cart findByUserId(Long userId) throws SQLException {
-        String sql = "SELECT * FROM cart WHERE id_User = ?";
+        String sql = "SELECT c.*  FROM cart c WHERE id_User = ?";
 
         try (Connection conn = dbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -126,5 +129,71 @@ public class CartDao implements IDao<Cart> {
             LOGGER.log(Level.SEVERE, "Error adding cart line", e);
         }
         return null;
+    }
+
+    public boolean removeCartLine(Long cartLineId) {
+        String sql = "DELETE FROM CartLine WHERE id_CartLine = ?";
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, cartLineId);
+            int rowsAffected = stmt.executeUpdate();
+            LOGGER.log(Level.INFO, "CartLine removed: " + cartLineId);
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error removing cart line", e);
+            throw new RuntimeException("Failed to remove cart line", e);
+        }
+    }
+
+    public boolean clearCart(Long cartId) {
+        String sql = "DELETE FROM CartLine WHERE id_Cart = ?";
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, cartId);
+            stmt.executeUpdate();
+            LOGGER.log(Level.INFO, "Cart cleared: " + cartId);
+            return true;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error clearing cart", e);
+            throw new RuntimeException("Failed to clear cart", e);
+        }
+    }
+
+    private List<CartLine> findCartLinesByCartId(Long cartId) {
+        String sql = "SELECT cl.*, c.* FROM CartLine cl " +
+                "JOIN Course c ON cl.id_Course = c.id_Course " +
+                "WHERE cl.id_Cart = ?";
+        List<CartLine> cartLines = new ArrayList<>();
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, cartId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    CartLine cartLine = new CartLine();
+                    cartLine.setId(rs.getLong("id_CartLine"));
+                    cartLine.setQuantity(rs.getInt("car_quantity"));
+
+                    Course course = new Course();
+                    course.setId(rs.getLong("id_Course"));
+                    course.setName(rs.getString("co_name"));
+                    course.setDescription(rs.getString("co_description"));
+                    course.setDuration(rs.getInt("co_duration"));
+                    course.setType(rs.getString("co_type"));
+                    course.setPrice(rs.getDouble("co_price"));
+
+                    cartLine.setCourse(course);
+                    cartLines.add(cartLine);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error finding cart lines", e);
+        }
+        return cartLines;
     }
 }

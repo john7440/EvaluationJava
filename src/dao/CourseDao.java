@@ -3,6 +3,7 @@ package dao;
 import config.DatabaseConfig;
 import entity.Course;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,17 @@ public class CourseDao implements IDao<Course>{
     private static final Logger LOGGER = Logger.getLogger(CourseDao.class.getName());
     private static CourseDao instance;
     private DatabaseConfig dbConfig;
+
+    private CourseDao() throws IOException, ClassNotFoundException {
+        this.dbConfig = DatabaseConfig.getInstance();
+    }
+
+    public static CourseDao getInstance() throws IOException, ClassNotFoundException {
+        if (instance == null) {
+            instance = new CourseDao();
+            }
+        return instance;
+    }
 
     @Override
     public Course save(Course entity) throws SQLException {

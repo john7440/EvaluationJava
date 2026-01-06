@@ -7,6 +7,7 @@ import entity.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,7 +117,26 @@ public class OrderBusiness {
         System.out.println("----------------------------------------");
         System.out.printf("TOTAL: %.2f €%n", order.getTotalAmount());
         System.out.println("========================================\n");
-
     }
 
+    /**
+     * Display list of orders
+     * @param orders list of orders to display
+     */
+    public void displayOrderList(List<Order> orders) {
+        if (orders == null || orders.isEmpty()) {
+            System.out.println("No orders found");
+            return;
+        }
+
+        System.out.println("\n========== Your Orders ==========");
+        for (Order order : orders) {
+            System.out.printf("Order #%-5d | Date: %s | Client: %-20s | Total: %8.2f €%n",
+                    order.getId(),
+                    order.getOrderDate(),
+                    order.getClient().getFirstName() + " " + order.getClient().getLastName(),
+                    order.getTotalAmount());
+        }
+        System.out.println("=================================\n");
+    }
 }

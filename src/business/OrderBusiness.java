@@ -88,6 +88,15 @@ public class OrderBusiness {
     }
 
     /**
+     * Find all orders for a user
+     * @param userId user ID
+     * @return list of user's orders
+     */
+    public List<Order> findOrdersByUserId(Long userId) throws SQLException {
+        return orderDao.findByUserId(userId);
+    }
+
+    /**
      * Display order details
      * @param order order to display
      */

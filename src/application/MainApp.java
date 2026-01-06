@@ -86,6 +86,12 @@ public class MainApp {
             case 1:
                 viewAllCourses();
                 break;
+            case 2:
+                searchCoursesByKeyword();
+                break;
+            case 3:
+                filterCoursesByType();
+                break;
             case 0:
                 return false;
             default:
@@ -113,6 +119,22 @@ public class MainApp {
         String keyword = scanner.nextLine();
 
         List<Course> courses = courseBusiness.searchByKeyword(keyword);
+        courseBusiness.displayCourseList(courses);
+    }
+
+    /**
+     * Filter courses by type (PRESENTIEL or DISTANCIEL)
+     */
+    public void filterCoursesByType() throws SQLException, ClassNotFoundException {
+        System.out.println("\nSelect course type:");
+        System.out.println("1. PRESENTIEL");
+        System.out.println("2. DISTANCIEL");
+        System.out.print("Choose an option: ");
+
+        int choice = readInt();
+        String type = choice  == 1 ? "PRESENTIEL" : "DISTANCIEL";
+
+        List<Course> courses = courseBusiness.filterByType(type);
         courseBusiness.displayCourseList(courses);
     }
 

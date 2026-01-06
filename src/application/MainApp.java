@@ -139,6 +139,15 @@ public class MainApp {
             case 3:
                 filterCoursesByType();
                 break;
+            case 4:
+                viewCart();
+                break;
+            case 5:
+                addCourseToCart();
+                break;
+            case 9:
+                logout();
+                break;
             case 0:
                 return false;
             default:
@@ -229,6 +238,60 @@ public class MainApp {
             LOGGER.log(Level.INFO, "User logged in: " + login);
         } else {
             System.out.println("\nInvalid login or password! Please try again.");
+        }
+    }
+
+    /**
+     * Logout current user
+     */
+    private void logout() throws SQLException, ClassNotFoundException {
+        if (currentUser != null) {
+            LOGGER.log(Level.INFO, "User logged out: " + currentUser.getLogin());
+        }
+        currentUser = null;
+        currentCart = null;
+        System.out.println("\nYou have been logged out!");
+    }
+
+    //-------------------------------
+    //managing cart
+
+    /**
+     * View current cart
+     */
+    private void viewCart() throws SQLException {
+        if (currentCart == null) {
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+        } else {
+            // refresh
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+        }
+        cartBusiness.displayCart(currentCart);
+    }
+
+    /**
+     * Add a course to cart
+     */
+    private void addCourseToCart() throws SQLException, ClassNotFoundException {
+        viewAllCourses();
+
+        System.out.print("\nEnter course ID to add to cart: ");
+        Long courseId = readLong();
+
+        System.out.print("Enter quantity: ");
+        int quantity = readInt();
+
+        if (currentCart == null) {
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+        }
+
+        boolean added = cartBusiness.addCourseToCart(currentCart, courseId, quantity);
+
+        if (added){
+            System.out.println("\nCourse added to cart successfully!");
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+        } else {
+            System.out.println("\nFailed to add course to cart! Please try again");
         }
     }
 

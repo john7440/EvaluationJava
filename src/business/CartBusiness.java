@@ -99,20 +99,19 @@ public class CartBusiness {
 
     /**
      * Clear all items from cart
+     *
      * @param cart cart to clear
-     * @return true if cleared successfully
      */
-    public boolean clearCart(Cart cart) {
+    public void clearCart(Cart cart) {
         if (cart == null) {
             LOGGER.log(Level.WARNING, "Cart cannot be null");
-            return false;
+            return;
         }
 
         boolean cleared = cartDao.clearCart(cart.getId());
         if (cleared) {
             LOGGER.log(Level.INFO, () -> "Cart cleared!");
         }
-        return cleared;
     }
 
     /**
@@ -138,7 +137,7 @@ public class CartBusiness {
         for (CartLine line : cart.getCartLines()) {
             Course course = line.getCourse();
             double lineTotal = course.getPrice() * line.getQuantity();
-            System.out.printf("[%d] %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
+            System.out.printf("ID:[%d] %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
                     line.getId(),
                     course.getName(),
                     line.getQuantity(),

@@ -58,7 +58,7 @@ public class Cart {
 
     public void addCartLine(CartLine cartLine){
         this.cartLines.add(cartLine);
-        cartLines.setCart(this);
+        cartLine.setCart(this);
     }
 
     public double getTotalAmount() {

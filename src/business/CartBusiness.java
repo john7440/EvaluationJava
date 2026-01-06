@@ -97,4 +97,22 @@ public class CartBusiness {
         return removed;
     }
 
+    /**
+     * Clear all items from cart
+     * @param cart cart to clear
+     * @return true if cleared successfully
+     */
+    public boolean clearCart(Cart cart) {
+        if (cart == null) {
+            LOGGER.log(Level.WARNING, "Cart cannot be null");
+            return false;
+        }
+
+        boolean cleared = cartDao.clearCart(cart.getId());
+        if (cleared) {
+            LOGGER.log(Level.INFO, () -> "Cart cleared!");
+        }
+        return cleared;
+    }
+
 }

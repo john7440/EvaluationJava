@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -92,6 +93,9 @@ public class MainApp {
             case 3:
                 filterCoursesByType();
                 break;
+            case 4:
+                createAccount();
+                break;
             case 0:
                 return false;
             default:
@@ -138,6 +142,30 @@ public class MainApp {
         courseBusiness.displayCourseList(courses);
     }
 
+    /**
+     * Create a new user account
+     */
+    private void createAccount() throws SQLException, ClassNotFoundException {
+        System.out.println("\n========== Create Account ==========");
+        System.out.print("Enter login: ");
+        String login = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        User user = userBusiness.createAccount(login, password);
+
+        if (user != null) {
+            System.out.println("Account created successfully!");
+            currentUser = user;
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+            LOGGER.log(Level.INFO, () ->"New account created and user logged in: " + login);
+        } else {
+            System.out.println("\nFailed to create account. Login may already exist.");
+        }
+
+    }
+
     //--------------------------------------------------------------------
     //verifications methods
 
@@ -146,7 +174,8 @@ public class MainApp {
      */
     private int readInt() {
         try {
-            int value = Integer.parseInt(scanner.nextLine());
+            int value;
+            value = Integer.parseInt(scanner.nextLine());
             return value;
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a number.");

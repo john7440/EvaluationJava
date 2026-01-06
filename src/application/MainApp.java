@@ -35,7 +35,7 @@ public class MainApp {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         MainApp app = new MainApp();
         app.run();
     }
@@ -43,14 +43,14 @@ public class MainApp {
     /**
      * Main application loop
      */
-    public void run(){
+    public void run() throws SQLException, ClassNotFoundException {
         System.out.println("---Welcome to Training Sales Application---");
 
         boolean running = true;
 
         while (running) {
             if (currentUser == null) {
-                running = displayVistorMenu();
+                running = displayVisitorMenu();
             } else {
                 running  = displayUserMenu();
             }
@@ -105,6 +105,18 @@ public class MainApp {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a number.");
             return -1;
+        }
+    }
+
+    /**
+     * Read long input with error handling
+     */
+    private Long readLong() {
+        try {
+            return Long.parseLong(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+            return -1L;
         }
     }
 }

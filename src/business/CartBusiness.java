@@ -4,6 +4,8 @@ import dao.CartDao;
 import dao.CourseDao;
 import dao.DaoFactory;
 import entity.Cart;
+import entity.CartLine;
+import entity.Course;
 import entity.User;
 
 import java.io.IOException;
@@ -43,6 +45,37 @@ public class CartBusiness {
             LOGGER.log(Level.INFO, () -> "New cart created for user: " + user.getLogin());
         }
         return cart;
+    }
+
+    /**
+     * Add a course to cart
+     * @param cart user's cart
+     * @param courseId course ID to add
+     * @param quantity quantity to add
+     * @return true if added successfully
+     */
+    public boolean addCourseToCart(Cart cart,Long courseId, int quantity) {
+        if (cart == null) {
+            LOGGER.log(Level.WARNING, "Cart cannot be null");
+            return false;
+        }
+
+        if (quantity < 0) {
+            LOGGER.log(Level.WARNING, "Quantity must be positive");
+            return false;
+        }
+
+        Course course = courseDao.findById(courseId);
+        if (course == null) {
+            LOGGER.log(Level.WARNING, () -> "Course not found " +  courseId);
+            return false;
+        }
+
+        CartLine cartLine = new CartLine(cart, course, quantity);
+        cartDao.addCartLine(cartLine);
+
+        LOGGER.log(Level.INFO, ()-> "Course added to cart: " + course.getName());
+        return true;
     }
 
 }

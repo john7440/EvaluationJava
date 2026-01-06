@@ -34,11 +34,15 @@ public class MainApp {
         this.orderBusiness = new OrderBusiness();
 
     }
+    //----------------------------------------------------------------------------
+    //main
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
         MainApp app = new MainApp();
         app.run();
     }
+
+    //---------------------------------------------------------------------------
 
     /**
      * Main application loop
@@ -58,6 +62,9 @@ public class MainApp {
         System.out.println("\nThank you for using our Application!");
         scanner.close();
     }
+
+    //-------------------------------------------------------------
+    //menus
 
     /**
      * Display menu for visitors (non-authenticated users)
@@ -87,6 +94,9 @@ public class MainApp {
         return true;
     }
 
+    // ----------------------------------------------------------
+    //business methods
+
     /**
      * View all available courses
      */
@@ -94,6 +104,20 @@ public class MainApp {
         List<Course> courses = courseBusiness.getAllCourses();
         courseBusiness.displayCourseList(courses);
     }
+
+    /**
+     * Search courses by keyword
+     */
+    private void searchCoursesByKeyword() throws SQLException, ClassNotFoundException {
+        System.out.print("\nEnter search keyword: ");
+        String keyword = scanner.nextLine();
+
+        List<Course> courses = courseBusiness.searchByKeyword(keyword);
+        courseBusiness.displayCourseList(courses);
+    }
+
+    //--------------------------------------------------------------------
+    //verifications methods
 
     /**
      * Read integer input with error handling

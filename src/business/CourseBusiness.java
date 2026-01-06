@@ -42,4 +42,20 @@ public class CourseBusiness {
          LOGGER.log(Level.INFO, ()->"Found: " + results.size() + " courses matching keyword: " + keyword);
          return results;
     }
+
+    /**
+     * Filter courses by type (PRESENTIEL or DISTANCIEL)
+     * @param type course type
+     * @return list of courses of specified type
+     */
+    public List<Course> filterByType(String type) throws SQLException, ClassNotFoundException {
+        if (type == null || (!type.equalsIgnoreCase("PRESENTIEL") && !type.equalsIgnoreCase("DISTANCIEL"))) {
+            LOGGER.log(Level.WARNING, () -> "Invalid course type " + type);
+            return getAllCourses();
+        }
+
+        List<Course> results = courseDao.findByType(type.toUpperCase());
+        LOGGER.log(Level.INFO, ()->"Found: " + results.size() + " courses matching type: " + type);
+        return results;
+    }
 }

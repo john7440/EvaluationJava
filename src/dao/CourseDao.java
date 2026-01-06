@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class CourseDao implements IDao<Course>{
     private static final Logger LOGGER = Logger.getLogger(CourseDao.class.getName());
     private static CourseDao instance;
-    private DatabaseConfig dbConfig;
+    private final DatabaseConfig dbConfig;
 
     private CourseDao() throws IOException, ClassNotFoundException {
         this.dbConfig = DatabaseConfig.getInstance();
@@ -30,7 +30,7 @@ public class CourseDao implements IDao<Course>{
     }
 
     @Override
-    public Course save(Course entity) throws SQLException {
+    public Course save(Course entity){
         return null;
     }
 
@@ -46,6 +46,20 @@ public class CourseDao implements IDao<Course>{
 
     @Override
     public Course findById(Long id) {
+        String sql = "SELECT c.* FROM course c WHERE id_Course = ?";
+
+        try(Connection connection = dbConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)){
+
+            statement.setLong(1, id);
+            try (ResultSet rs = statement.executeQuery()){
+                if (rs.next()){
+                    return  mapResultSetToCourse(rs);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error finding course by ID", e);
+        }
         return null;
     }
 
@@ -62,7 +76,7 @@ public class CourseDao implements IDao<Course>{
 
     @Override
     public List<Course> findAll() {
-        String sql = "SELECT * FROM courses";
+        String sql = "SELECT c.* FROM course c";
         List<Course> courses = new ArrayList<>();
 
         try (Connection connect = dbConfig.getConnection();
@@ -78,8 +92,8 @@ public class CourseDao implements IDao<Course>{
         return courses;
     }
 
-    public List<Course> findByType(String type) throws SQLException {
-        String sql = "SELECT * FROM courses WHERE co_type = ?";
+    public List<Course> findByType(String type) {
+        String sql = "SELECT c.* FROM course c WHERE co_type = ?";
         List<Course> courses = new ArrayList<>();
 
         try(Connection connect = dbConfig.getConnection();
@@ -92,7 +106,7 @@ public class CourseDao implements IDao<Course>{
                     courses.add(mapResultSetToCourse(rs));
                 }
             }
-            LOGGER.log(Level.INFO, "Found " + courses.size() + " courses of type: " + type);
+            LOGGER.log(Level.INFO, () ->"Found " + courses.size() + " courses of type: " + type);
         } catch (SQLException e){
             LOGGER.log(Level.SEVERE, "Error finding courses by type", e);
         }
@@ -100,8 +114,8 @@ public class CourseDao implements IDao<Course>{
         return courses;
     }
 
-    public List<Course> findByKeyword(String keyword) throws SQLException {
-        String sql = "SELECT * FROM courses WHERE co_name LIKE ? OR co_description LIKE ? ";
+    public List<Course> findByKeyword(String keyword) {
+        String sql = "SELECT c.* FROM course c WHERE co_name LIKE ? OR co_description LIKE ? ";
         List<Course> courses = new ArrayList<>();
 
         try(Connection connect = dbConfig.getConnection();
@@ -116,7 +130,7 @@ public class CourseDao implements IDao<Course>{
                     courses.add(mapResultSetToCourse(rs));
                 }
             }
-            LOGGER.log(Level.INFO, "Found " + courses.size() + " courses with keyword: " + keyword);
+            LOGGER.log(Level.INFO, () ->"Found " + courses.size() + " courses with keyword: " + keyword);
         } catch (SQLException e){
             LOGGER.log(Level.SEVERE, "Error finding courses by keyword", e);
         }

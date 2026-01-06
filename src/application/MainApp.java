@@ -96,6 +96,9 @@ public class MainApp {
             case 4:
                 createAccount();
                 break;
+            case 5:
+                login();
+                break;
             case 0:
                 return false;
             default:
@@ -164,6 +167,29 @@ public class MainApp {
             System.out.println("\nFailed to create account. Login may already exist.");
         }
 
+    }
+
+    /**
+     * Login with existing account
+     */
+    private void login() throws SQLException, ClassNotFoundException {
+        System.out.println("\n========== Login ==========");
+        System.out.print("Enter login: ");
+        String login = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        User user = userBusiness.authenticate(login, password);
+
+        if (user != null) {
+            System.out.println("\nLogin successful! Welcome " + login);
+            currentUser = user;
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+            LOGGER.log(Level.INFO, "User logged in: " + login);
+        } else {
+            System.out.println("\nInvalid login or password! Please try again.");
+        }
     }
 
     //--------------------------------------------------------------------

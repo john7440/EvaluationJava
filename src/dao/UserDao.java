@@ -108,6 +108,29 @@ public class UserDao implements IDao<User>{
         return users;
     }
 
+    //auth
+    public User authenticate(String login, String password) throws SQLException {
+        String sql = "SELECT u.* FROM user u WHERE u_login = ? AND u_password = ?";
+
+        try (Connection connect = dbConfig.getConnection();
+             PreparedStatement statement = connect.prepareStatement(sql)) {
+
+            statement.setString(1, login);
+            statement.setString(2, password);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    LOGGER.log(Level.INFO, "User authenticated:" + login);
+                    return mapResultSetToUser(rs);
+                }
+            }
+
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error authenticating user", e);
+        }
+        return null;
+    }
+
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setId(rs.getLong("id_User"));
@@ -117,4 +140,3 @@ public class UserDao implements IDao<User>{
     }
 }
 
-}

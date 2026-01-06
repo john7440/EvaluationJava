@@ -58,4 +58,25 @@ public class CourseBusiness {
         LOGGER.log(Level.INFO, ()->"Found: " + results.size() + " courses matching type: " + type);
         return results;
     }
+
+    /**
+     * Display course details
+     * @param course course to display
+     */
+    public void displayCourseDetails(Course course) throws SQLException, ClassNotFoundException {
+        if (course == null) {
+            System.out.println("Course not found");
+            return;
+        }
+
+        System.out.println("\n========== Course Details ==========");
+        System.out.println("ID: " + course.getId());
+        System.out.println("Name: " + course.getName());
+        System.out.println("Description: " + course.getDescription());
+        System.out.println("Duration: " + course.getDuration() + " days");
+        System.out.println("Type: " + course.getType());
+        System.out.println("Price: " + String.format("%.2f", course.getPrice()) + " €");
+        System.out.println("====================================\n");
+
+    }
 }

@@ -4,9 +4,12 @@ import config.DatabaseConfig;
 import entity.Client;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -37,6 +40,24 @@ public class ClientDao implements IDao<Client> {
         client.setAddress(rs.getString("cl_address"));
         client.setPhoneNumber(rs.getString("cl_phoneNumber"));
         return client;
+    }
+
+    public Client findByEmail(String email) throws SQLException {
+        String sql = "select c.* from client c where cl_email = ?";
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()){
+                if (rs.next()) {
+                    return mapResultSetToClient(rs);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error finding client by email", e);
+        }
+        return null;
     }
 
     @Override

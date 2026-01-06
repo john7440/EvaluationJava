@@ -1,11 +1,11 @@
 package dao;
 
 import config.DatabaseConfig;
-import entity.Order;
-import entity.OrderLine;
+import entity.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class OrderDao implements IDao<Order>{
     private static final Logger LOGGER = Logger.getLogger(OrderDao.class.getName());
     private static OrderDao instance;
-    private DatabaseConfig dbConfig;
+    private final DatabaseConfig dbConfig;
 
     private OrderDao() throws IOException, ClassNotFoundException {
         this.dbConfig = DatabaseConfig.getInstance();
@@ -93,6 +93,86 @@ public class OrderDao implements IDao<Order>{
             }
         }
         return null;
+    }
+
+    public List<Order> findByUserId(Long userId) throws SQLException {
+        String sql = "SELECT o.*, u.*, c.* FROM Order o " +
+                "JOIN User u ON o.id_User = u.id_User " +
+                "JOIN Client c ON o.id_Client = c.id_Client " +
+                "WHERE o.id_User = ?";
+        List<Order> orders = new ArrayList<>();
+
+        try( Connection connect = dbConfig.getConnection();
+             PreparedStatement statement = connect.prepareStatement(sql)){
+
+            statement.setLong(1, userId);
+            try (ResultSet rs = statement.executeQuery()){
+                while (rs.next()) {
+                    Order order = mapResultSetToOrder(rs);
+                    order.setOrderLines(findOrderLinesByOrderId(order.getId()));
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error finding orders by user ID", e);
+        }
+        return orders;
+    }
+
+    private List<OrderLine> findOrderLinesByOrderId(Long orderId) {
+        String sql = "SELECT ol.*, c.* FROM OrderLine ol " +
+                "JOIN Course c ON ol.id_Course = c.id_Course " +
+                "WHERE ol.id_Order = ?";
+        List<OrderLine> orderLines = new ArrayList<>();
+
+        try (Connection conn = dbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, orderId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    OrderLine orderLine = new OrderLine();
+                    orderLine.setId(rs.getLong("id_OrderLine"));
+                    orderLine.setQuantity(rs.getInt("ol_quantity"));
+                    orderLine.setUnitPrice(rs.getDouble("ol_unitPrice"));
+
+                    Course course = new Course();
+                    course.setId(rs.getLong("id_Course"));
+                    course.setName(rs.getString("co_name"));
+                    course.setDescription(rs.getString("co_description"));
+                    course.setDuration(rs.getInt("co_duration"));
+                    course.setType(rs.getString("co_type"));
+                    course.setPrice(rs.getDouble("co_price"));
+
+                    orderLine.setCourse(course);
+                    orderLines.add(orderLine);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error finding order lines", e);
+        }
+        return orderLines;
+    }
+
+    private Order mapResultSetToOrder(ResultSet rs) throws SQLException {
+        Order order = new Order();
+        order.setId(rs.getLong("id_Order"));
+        order.setOrderDate(rs.getTimestamp("o_orderDate"));
+        order.setTotalAmount(rs.getDouble("o_totalAmount"));
+
+        User user = new User();
+        user.setId(rs.getLong("id_User"));
+        user.setLogin(rs.getString("u_login"));
+        order.setUser(user);
+
+        Client client = new Client();
+        client.setId(rs.getLong("id_Client"));
+        client.setFirstName(rs.getString("cl_firstName"));
+        client.setLastName(rs.getString("cl_lastName"));
+        client.setEmail(rs.getString("cl_email"));
+        order.setClient(client);
+
+        return order;
     }
 
     @Override

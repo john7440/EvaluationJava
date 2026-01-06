@@ -63,7 +63,7 @@ public class CourseBusiness {
      * Display course details
      * @param course course to display
      */
-    public void displayCourseDetails(Course course) throws SQLException, ClassNotFoundException {
+    public void displayCourseDetails(Course course){
         if (course == null) {
             System.out.println("Course not found");
             return;
@@ -78,5 +78,27 @@ public class CourseBusiness {
         System.out.println("Price: " + String.format("%.2f", course.getPrice()) + " €");
         System.out.println("====================================\n");
 
+    }
+
+    /**
+     * Display list of courses
+     * @param courses list of courses to display
+     */
+    public void displayCourseList(List<Course> courses) {
+        if (courses == null || courses.isEmpty()) {
+            System.out.println("No courses available");
+            return;
+        }
+
+        System.out.println("\n========== Available Courses ==========");
+        for (Course course : courses) {
+            System.out.printf("%-5d | %-30s | %-12s | %2d days | %8.2f €%n",
+                    course.getId(),
+                    course.getName(),
+                    course.getType(),
+                    course.getDuration(),
+                    course.getPrice());
+        }
+        System.out.println("========================================\n");
     }
 }

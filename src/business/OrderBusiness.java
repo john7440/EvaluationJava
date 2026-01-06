@@ -6,7 +6,6 @@ import dao.OrderDao;
 import entity.*;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +29,7 @@ public class OrderBusiness {
      * @param client client information
      * @return created order or null if failed
      */
-    public Order createOrder(User user, Cart cart, Client client) throws SQLException {
+    public Order createOrder(User user, Cart cart, Client client){
         if (user == null ||  cart == null || client == null) {
             LOGGER.log(Level.WARNING, "User,cart or client cannot be null");
             return null;
@@ -92,7 +91,7 @@ public class OrderBusiness {
      * @param userId user ID
      * @return list of user's orders
      */
-    public List<Order> findOrdersByUserId(Long userId) throws SQLException {
+    public List<Order> findOrdersByUserId(Long userId) {
         return orderDao.findByUserId(userId);
     }
 

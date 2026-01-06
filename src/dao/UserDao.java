@@ -57,6 +57,24 @@ public class UserDao implements IDao<User>{
         return user;
     }
 
+    public User findByLogin(String login) throws SQLException {
+        String sql = "SELECT u.* FROM user u WHERE u_login = ?";
+
+        try (Connection connect = dbConfig.getConnection() ;
+        PreparedStatement statement = connect.prepareStatement(sql)){
+
+            statement.setString(1, login);
+            try (ResultSet rs = statement.executeQuery()){
+                if (rs.next()) {
+                    return mapResultSetToUser(rs);
+                }
+            }
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error finding user by login", e);
+        }
+        return null;
+    }
+
     @Override
     public User update(User entity) {
         return null;
@@ -77,5 +95,13 @@ public class UserDao implements IDao<User>{
         return List.of();
     }
 
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getLong("id_User"));
+        user.setLogin(rs.getString("u_login"));
+        user.setPassword(rs.getString("u_password"));
+        return user;
+    }
+}
 
 }

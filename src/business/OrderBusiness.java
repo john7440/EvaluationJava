@@ -86,4 +86,37 @@ public class OrderBusiness {
         return orderDao.findById(orderId);
     }
 
+    /**
+     * Display order details
+     * @param order order to display
+     */
+    public void displayOrderDetails(Order order) {
+        if (order == null) {
+            System.out.println("Cannot display order details: order is null");
+            return;
+        }
+
+        System.out.println("\n========== Order Confirmation ==========");
+        System.out.println("Order ID: " + order.getId());
+        System.out.println("Date: " + order.getOrderDate());
+        System.out.println("Client: " + order.getClient().getFirstName() + " " + order.getClient().getLastName());
+        System.out.println("Email: " + order.getClient().getEmail());
+        System.out.println("----------------------------------------");
+        System.out.println("Items:");
+
+        for (OrderLine line : order.getOrderLines()) {
+            Course course = line.getCourse();
+            double lineTotal = line.getUnitPrice() * line.getQuantity();
+            System.out.printf("  %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
+                    course.getName(),
+                    line.getQuantity(),
+                    line.getUnitPrice(),
+                    lineTotal);
+        }
+        System.out.println("----------------------------------------");
+        System.out.printf("TOTAL: %.2f €%n", order.getTotalAmount());
+        System.out.println("========================================\n");
+
+    }
+
 }

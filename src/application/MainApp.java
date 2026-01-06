@@ -28,6 +28,8 @@ public class MainApp {
     private User currentUser;
     private Cart currentCart;
 
+    String option = "Choose an option: ";
+
     public MainApp() throws IOException, ClassNotFoundException {
         this.userBusiness = new UserBusiness();
         this.courseBusiness = new CourseBusiness();
@@ -79,7 +81,7 @@ public class MainApp {
         System.out.println("5. Login");
         System.out.println("0. Exit");
         System.out.println("==================================");
-        System.out.print("Choose an option: ");
+        System.out.print(option);
 
         int choice = readInt();
 
@@ -125,7 +127,7 @@ public class MainApp {
         System.out.println("9. Logout");
         System.out.println("0. Exit");
         System.out.println("====================================================================");
-        System.out.print("Choose an option: ");
+        System.out.print(option);
 
         int choice = readInt();
 
@@ -194,7 +196,7 @@ public class MainApp {
         System.out.println("\nSelect course type:");
         System.out.println("1. PRESENTIEL");
         System.out.println("2. DISTANCIEL");
-        System.out.print("Choose an option: ");
+        System.out.print(option);
 
         int choice = readInt();
         String type = choice  == 1 ? "PRESENTIEL" : "DISTANCIEL";
@@ -206,7 +208,7 @@ public class MainApp {
     /**
      * Create a new user account
      */
-    private void createAccount() throws SQLException, ClassNotFoundException {
+    private void createAccount() throws SQLException {
         System.out.println("\n========== Create Account ==========");
         System.out.print("Enter login: ");
         String login = scanner.nextLine();
@@ -230,7 +232,7 @@ public class MainApp {
     /**
      * Login with existing account
      */
-    private void login() throws SQLException, ClassNotFoundException {
+    private void login() throws SQLException{
         System.out.println("\n========== Login ==========");
         System.out.print("Enter login: ");
         String login = scanner.nextLine();
@@ -253,7 +255,7 @@ public class MainApp {
     /**
      * Logout current user
      */
-    private void logout() throws SQLException, ClassNotFoundException {
+    private void logout()  {
         if (currentUser != null) {
             LOGGER.log(Level.INFO, "User logged out: " + currentUser.getLogin());
         }
@@ -269,12 +271,7 @@ public class MainApp {
      * View current cart
      */
     private void viewCart() throws SQLException {
-        if (currentCart == null) {
-            currentCart = cartBusiness.getOrCreateCart(currentUser);
-        } else {
-            // refresh
-            currentCart = cartBusiness.getOrCreateCart(currentUser);
-        }
+        currentCart = cartBusiness.getOrCreateCart(currentUser);
         cartBusiness.displayCart(currentCart);
     }
 
@@ -307,7 +304,7 @@ public class MainApp {
     /**
      * Remove a course from cart
      */
-    private void removeCourseFromCart() throws SQLException, ClassNotFoundException {
+    private void removeCourseFromCart() throws SQLException{
         viewCart();
 
         if (cartBusiness.isCartEmpty(currentCart)) {
@@ -333,7 +330,7 @@ public class MainApp {
     /**
      * Place an order
      */
-    private void placeOrder() throws SQLException, ClassNotFoundException {
+    private void placeOrder() throws SQLException{
         currentCart = cartBusiness.getOrCreateCart(currentUser);
 
         if (cartBusiness.isCartEmpty(currentCart)) {

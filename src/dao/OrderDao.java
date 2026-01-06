@@ -113,6 +113,7 @@ public class OrderDao implements IDao<Order>{
                     orders.add(order);
                 }
             }
+            LOGGER.log(Level.INFO, () ->"Found " + orders.size() + " orders for user: " + userId);
         } catch (SQLException e){
             LOGGER.log(Level.SEVERE, "Error finding orders by user ID", e);
         }
@@ -187,6 +188,25 @@ public class OrderDao implements IDao<Order>{
 
     @Override
     public Order findById(Long id) {
+        String sql = "SELECT o.*, u.*, c.* FROM `Order` o " +
+                "JOIN User u ON o.id_User = u.id_User " +
+                "JOIN Client c ON o.id_Client = c.id_Client " +
+                "WHERE o.id_Order = ?";
+
+        try (Connection connection = dbConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)){
+
+            statement.setLong(1, id);
+            try (ResultSet rs = statement.executeQuery()){
+                if (rs.next()){
+                    Order order = mapResultSetToOrder(rs);
+                    order.setOrderLines(findOrderLinesByOrderId(order.getId()));
+                    return order;
+                }
+            }
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error finding order by ID", e);
+        }
         return null;
     }
 

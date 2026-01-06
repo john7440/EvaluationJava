@@ -78,4 +78,23 @@ public class CartBusiness {
         return true;
     }
 
+    /**
+     * Remove a course from cart
+     * @param cartLineId cart line ID to remove
+     * @return true if removed successfully
+     */
+    public boolean removeCourseFromCart(Long cartLineId) {
+        if (cartLineId == null) {
+            LOGGER.log(Level.WARNING, "Cart line id cannot be null");
+            return false;
+        }
+
+        boolean removed = cartDao.removeCartLine(cartLineId);
+
+        if (removed) {
+            LOGGER.log(Level.INFO, () -> "Course removed from cart: " + cartLineId);
+        }
+        return removed;
+    }
+
 }

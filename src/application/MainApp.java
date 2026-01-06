@@ -145,6 +145,9 @@ public class MainApp {
             case 5:
                 addCourseToCart();
                 break;
+            case 6:
+                removeCourseFromCart();
+                break;
             case 9:
                 logout();
                 break;
@@ -235,7 +238,7 @@ public class MainApp {
             System.out.println("\nLogin successful! Welcome " + login);
             currentUser = user;
             currentCart = cartBusiness.getOrCreateCart(currentUser);
-            LOGGER.log(Level.INFO, "User logged in: " + login);
+            LOGGER.log(Level.INFO, () ->"User logged in: " + login);
         } else {
             System.out.println("\nInvalid login or password! Please try again.");
         }
@@ -292,6 +295,29 @@ public class MainApp {
             currentCart = cartBusiness.getOrCreateCart(currentUser);
         } else {
             System.out.println("\nFailed to add course to cart! Please try again");
+        }
+    }
+
+    /**
+     * Remove a course from cart
+     */
+    private void removeCourseFromCart() throws SQLException, ClassNotFoundException {
+        viewCart();
+
+        if (cartBusiness.isCartEmpty(currentCart)) {
+            return;
+        }
+
+        System.out.print("\nEnter cart line ID to remove: ");
+        Long cartLineId = readLong();
+
+        boolean removed = cartBusiness.removeCourseFromCart(cartLineId);
+
+        if (removed){
+            System.out.println("\nCourse removed from cart successfully!");
+            currentCart = cartBusiness.getOrCreateCart(currentUser);
+        } else {
+            System.out.println("\nFailed to remove course from cart! Please try again");
         }
     }
 

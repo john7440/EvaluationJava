@@ -4,10 +4,7 @@ import config.DatabaseConfig;
 import entity.Client;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +15,7 @@ import java.util.logging.Logger;
 public class ClientDao implements IDao<Client> {
     private static final Logger LOGGER = Logger.getLogger(ClientDao.class.getName());
     private static ClientDao instance;
-    private DatabaseConfig dbConfig;
+    private final DatabaseConfig dbConfig;
 
     private ClientDao() throws IOException, ClassNotFoundException {
         this.dbConfig = DatabaseConfig.getInstance();
@@ -42,7 +39,7 @@ public class ClientDao implements IDao<Client> {
         return client;
     }
 
-    public Client findByEmail(String email) throws SQLException {
+    public Client findByEmail(String email){
         String sql = "select c.* from client c where cl_email = ?";
 
         try (Connection conn = dbConfig.getConnection();
@@ -61,12 +58,35 @@ public class ClientDao implements IDao<Client> {
     }
 
     @Override
-    public Client save(Client entity) throws SQLException {
+    public Client update(Client entity) {
         return null;
     }
 
     @Override
-    public Client update(Client entity) {
+    public Client save(Client client) {
+        String sql = "INSERT INTO Client (cl_firstName, cl_lastName, cl_email, cl_address, cl_phoneNumber) VALUES (?, ?, ?, ?, ?)";
+
+        try(Connection connection = dbConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+
+            statement.setString(1, client.getFirstName());
+            statement.setString(2, client.getLastName());
+            statement.setString(3, client.getEmail());
+            statement.setString(4, client.getAddress());
+            statement.setString(5, client.getPhoneNumber());
+
+            statement.executeUpdate();
+
+            try (ResultSet rs = statement.getGeneratedKeys()) {
+                if (rs.next()) {
+                    client.setId(rs.getLong(1));
+                    LOGGER.log(Level.INFO, () ->"Client created with ID: " + client.getId());
+                }
+            }
+            return client;
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error saving client", e);
+        }
         return null;
     }
 
@@ -81,7 +101,7 @@ public class ClientDao implements IDao<Client> {
     }
 
     @Override
-    public List<Client> findAll() throws SQLException {
+    public List<Client> findAll() {
         return List.of();
     }
 }

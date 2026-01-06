@@ -5,6 +5,7 @@ import entity.User;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,7 +93,19 @@ public class UserDao implements IDao<User>{
 
     @Override
     public List<User> findAll() throws  SQLException {
-        return List.of();
+        String sql = "SELECT u.* FROM user u";
+        List<User> users = new ArrayList<>();
+
+        try (Connection connect = dbConfig.getConnection();
+        Statement statement = connect.createStatement();
+        ResultSet rs = statement.executeQuery(sql)){
+            while (rs.next()) {
+                users.add(mapResultSetToUser(rs));
+            }
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error finding all users", e);
+        }
+        return users;
     }
 
     private User mapResultSetToUser(ResultSet rs) throws SQLException {

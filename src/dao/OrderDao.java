@@ -30,14 +30,14 @@ public class OrderDao implements IDao<Order>{
     }
 
     @Override
-    public Order save(Order order) throws SQLException {
+    public Order save(Order order) {
         Connection connection = null;
         try{
             connection = dbConfig.getConnection();
             connection.setAutoCommit(false);
 
             //Order
-            String orderSql = "INSERT INTO order (o_orderDate, o_totalAmount, id_User, id_Client) VALUES (?, ?, ?, ?)";
+            String orderSql = "INSERT INTO `order` (o_orderDate, o_totalAmount, id_User, id_Client) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(orderSql,  Statement.RETURN_GENERATED_KEYS)) {
                 statement.setTimestamp(1, new Timestamp(order.getOrderDate().getTime()));
                 statement.setDouble(2, order.getTotalAmount());
@@ -71,7 +71,7 @@ public class OrderDao implements IDao<Order>{
                 }
             }
             connection.commit();
-            LOGGER.log(Level.INFO, "Order saved with ID: " + order.getId());
+            LOGGER.log(Level.INFO, () ->"Order saved with ID: " + order.getId());
             return order;
         }  catch (SQLException e) {
             if (connection != null) {
@@ -95,8 +95,8 @@ public class OrderDao implements IDao<Order>{
         return null;
     }
 
-    public List<Order> findByUserId(Long userId) throws SQLException {
-        String sql = "SELECT o.*, u.*, c.* FROM Order o " +
+    public List<Order> findByUserId(Long userId){
+        String sql = "SELECT o.*, u.*, c.* FROM `Order` o " +
                 "JOIN User u ON o.id_User = u.id_User " +
                 "JOIN Client c ON o.id_Client = c.id_Client " +
                 "WHERE o.id_User = ?";
@@ -191,7 +191,7 @@ public class OrderDao implements IDao<Order>{
     }
 
     @Override
-    public List<Order> findAll() throws SQLException {
+    public List<Order> findAll() {
         return List.of();
     }
 }

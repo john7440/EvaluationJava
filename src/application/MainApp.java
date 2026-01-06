@@ -32,4 +32,28 @@ public class MainApp {
         this.orderBusiness = new OrderBusiness();
 
     }
+
+    public static void main(String[] args) {
+        MainApp app = new MainApp();
+        app.run();
+    }
+
+    /**
+     * Main application loop
+     */
+    public void run(){
+        System.out.println("---Welcome to Training Sales Application---");
+
+        boolean running = true;
+
+        while (running) {
+            if (currentUser == null) {
+                running = displayVistorMenu();
+            } else {
+                running  = displayUserMenu();
+            }
+        }
+        System.out.println("\nThank you for using our Application!");
+        scanner.close();
+    }
 }

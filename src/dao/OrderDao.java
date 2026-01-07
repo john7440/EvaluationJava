@@ -120,7 +120,7 @@ public class OrderDao implements IDao<Order>{
             statement.setLong(1, userId);
             try (ResultSet rs = statement.executeQuery()){
                 while (rs.next()) {
-                    Order order = mapResultSetToOrder(rs);
+                    Order order = ResultSetMapper.mapToOrder(rs);
                     order.setOrderLines(findOrderLinesByOrderId(order.getId()));
                     orders.add(order);
                 }
@@ -165,28 +165,6 @@ public class OrderDao implements IDao<Order>{
 
     //------------------------------------------------------------------
 
-    private Order mapResultSetToOrder(ResultSet rs) throws SQLException {
-        Order order = new Order();
-        order.setId(rs.getLong("id_Order"));
-        order.setOrderDate(rs.getTimestamp("o_orderDate"));
-        order.setTotalAmount(rs.getDouble("o_totalAmount"));
-
-        User user = new User();
-        user.setId(rs.getLong("id_User"));
-        user.setLogin(rs.getString("u_login"));
-        order.setUser(user);
-
-        Client client = new Client();
-        client.setId(rs.getLong("id_Client"));
-        client.setFirstName(rs.getString("cl_firstName"));
-        client.setLastName(rs.getString("cl_lastName"));
-        client.setEmail(rs.getString("cl_email"));
-        order.setClient(client);
-
-        return order;
-    }
-
-
     @Override
     public Order update(Order entity) {
         return null;
@@ -212,7 +190,7 @@ public class OrderDao implements IDao<Order>{
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()){
                 if (rs.next()){
-                    Order order = mapResultSetToOrder(rs);
+                    Order order = ResultSetMapper.mapToOrder(rs);
                     order.setOrderLines(findOrderLinesByOrderId(order.getId()));
                     return order;
                 }

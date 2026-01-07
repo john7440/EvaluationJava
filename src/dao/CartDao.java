@@ -32,16 +32,6 @@ public class CartDao implements IDao<Cart> {
         return SingletonHolder.INSTANCE;
     }
 
-    //----------------------------------
-    //map
-
-    private Cart mapResultSetToCart(ResultSet rs) throws SQLException {
-        Cart cart = new Cart();
-        cart.setId(rs.getLong("id_Cart"));
-        cart.setCreatedDate(rs.getTimestamp("ca_createdDate"));
-        return cart;
-    }
-
     //------------------------------------------
     //methods
 
@@ -99,7 +89,7 @@ public class CartDao implements IDao<Cart> {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Cart cart = mapResultSetToCart(rs);
+                    Cart cart = ResultSetMapper.mapToCart(rs);
                     cart.setCartLines(findCartLinesByCartId(cart.getId()));
                     return cart;
                 }

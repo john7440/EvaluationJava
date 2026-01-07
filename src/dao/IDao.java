@@ -9,7 +9,9 @@ import java.util.List;
  */
 public interface IDao<T>{
     T save(T entity) throws SQLException;
+    @SuppressWarnings("unused")
     T update(T entity);
+    @SuppressWarnings("unused")
     boolean delete(Long id);
     T findById(Long id);
     List<T> findAll() throws SQLException;

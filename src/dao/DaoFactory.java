@@ -1,29 +1,31 @@
 package dao;
 
-import java.io.IOException;
-
 /**
  * Factory pattern for dao instances
  */
 public class DaoFactory {
 
-    public static UserDao getUserDao() throws IOException, ClassNotFoundException {
+    private DaoFactory() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    public static UserDao getUserDao(){
         return UserDao.getInstance();
     }
 
-    public static ClientDao getClientDao() throws IOException, ClassNotFoundException {
+    public static ClientDao getClientDao(){
         return ClientDao.getInstance();
     }
 
-    public static CourseDao getCourseDao() throws IOException, ClassNotFoundException {
+    public static CourseDao getCourseDao(){
         return CourseDao.getInstance();
     }
 
-    public static CartDao getCartDao() throws IOException, ClassNotFoundException {
+    public static CartDao getCartDao(){
         return CartDao.getInstance();
     }
 
-    public static OrderDao getOrderDao() throws IOException, ClassNotFoundException {
+    public static OrderDao getOrderDao(){
         return OrderDao.getInstance();
     }
 }

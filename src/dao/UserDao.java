@@ -68,7 +68,7 @@ public class UserDao implements IDao<User>{
             statement.setString(1, login);
             try (ResultSet rs = statement.executeQuery()){
                 if (rs.next()) {
-                    return mapResultSetToUser(rs);
+                    return ResultSetMapper.mapToUser(rs);
                 }
             }
         } catch (SQLException e){
@@ -101,7 +101,7 @@ public class UserDao implements IDao<User>{
         Statement statement = connect.createStatement();
         ResultSet rs = statement.executeQuery(sql)){
             while (rs.next()) {
-                users.add(mapResultSetToUser(rs));
+                users.add(ResultSetMapper.mapToUser(rs));
             }
         } catch (SQLException e){
             LOGGER.log(Level.SEVERE, "Error finding all users", e);
@@ -122,7 +122,7 @@ public class UserDao implements IDao<User>{
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     LOGGER.log(Level.INFO, () ->"User authenticated:" + login);
-                    return mapResultSetToUser(rs);
+                    return ResultSetMapper.mapToUser(rs);
                 }
             }
 
@@ -132,12 +132,5 @@ public class UserDao implements IDao<User>{
         return null;
     }
 
-    private User mapResultSetToUser(ResultSet rs) throws SQLException{
-        User user = new User();
-        user.setId(rs.getLong("id_User"));
-        user.setLogin(rs.getString("u_login"));
-        user.setPassword(rs.getString("u_password"));
-        return user;
-    }
 }
 

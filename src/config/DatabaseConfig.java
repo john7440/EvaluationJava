@@ -48,6 +48,7 @@ public class DatabaseConfig {
         }
     }
 
+    @SuppressWarnings("unused")
     public String getProperty(String key) {
         return properties.getProperty(key);
     }

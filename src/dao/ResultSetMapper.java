@@ -1,9 +1,6 @@
 package dao;
 
-import entity.Cart;
-import entity.Client;
-import entity.Course;
-import entity.User;
+import entity.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -67,6 +64,32 @@ public final class ResultSetMapper {
         cart.setId(rs.getLong("id_Cart"));
         cart.setCreatedDate(rs.getTimestamp("ca_createdDate"));
         return cart;
+    }
+
+    /**
+     * Map ResultSet to Order object with User and Client
+     */
+    public static Order mapToOrder(ResultSet rs) throws SQLException {
+        Order order = new Order();
+        order.setId(rs.getLong("id_Order"));
+        order.setOrderDate(rs.getTimestamp("o_orderDate"));
+        order.setTotalAmount(rs.getDouble("o_totalAmount"));
+
+        //user
+        User user = new User();
+        user.setId(rs.getLong("id_User"));
+        user.setLogin(rs.getString("u_login"));
+        order.setUser(user);
+
+        //client
+        Client client = new Client();
+        client.setId(rs.getLong("id_Client"));
+        client.setFirstName(rs.getString("cl_firstName"));
+        client.setLastName(rs.getString("cl_lastName"));
+        client.setEmail(rs.getString("cl_email"));
+        order.setClient(client);
+
+        return order;
     }
 
 }

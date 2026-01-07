@@ -218,7 +218,11 @@ Key Relationships
 - Client 1 -- * Order: A client can have multiple orders
 - Order 1 -- * OrderLine: An order contains multiple lines
 
-See **docs/** folder for complete UML diagrams
+All UML diagrams are provided in two formats:
+- **`.puml`**: PlantUML source code (editable)
+- **`.png`**: Generated image (for viewing and documentation)
+  
+See **doc/** folder for complete UML diagrams
 
 ## Code Quality
 #### SonarQube Compliance

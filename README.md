@@ -156,12 +156,21 @@ training-sales-app/
 ├── resources/
 │   └── database.properties           # Database configuration file
 ├── docs/
-│   ├── use-case-diagram.puml         # Use case diagram
-│   ├── class-diagram.puml            # Class diagram
-│   ├── sequence-diagram.puml         # Sequence diagram
-│   ├── mcd.png                       # Conceptual data model
-│   ├── SQL                           # Contains the database creation script in txt format
-│   └── Specs.pdf                     # Functional specifications
+│ ├── 01-UseCase/
+│ │ ├── UseCase.png                   # Use case diagram (PNG)
+│ │ └── UseCase.puml                  # Use case diagram (PlantUML)
+│ ├── 02-Class/
+│ │ ├── Class.png                     # Class diagram (PNG)
+│ │ └── Class.puml                    # Class diagram (PlantUML)
+│ ├── 03-Sequence/
+│ │ ├── 1-OrderSequence.png           # Place order sequence diagram (PNG)
+│ │ ├── 1-OrderSequence.puml          # Place order sequence diagram (PlantUML)
+│ │ └── TD01-PlaceOrder.png           # Place order textual description
+│ ├── 04-MCD/
+│ │ └── mcdV1.png                     # Conceptual data model (MCD)
+│ ├── SQL/
+│ │ └── ScriptSQL.txt                 # SQL creation and insertion scripts
+│ └── Specifications.pdf              # Functional specifications document
 ├── lib/
 │   └── mariadb-java-client.jar       # JDBC driver
 └── README.md                         # This file

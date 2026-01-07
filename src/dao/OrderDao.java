@@ -146,15 +146,7 @@ public class OrderDao implements IDao<Order>{
             stmt.setLong(1, orderId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    OrderLine orderLine = new OrderLine();
-                    orderLine.setId(rs.getLong("id_OrderLine"));
-                    orderLine.setQuantity(rs.getInt("ol_quantity"));
-                    orderLine.setUnitPrice(rs.getDouble("ol_unitPrice"));
-
-                    Course course = ResultSetMapper.mapToCourse(rs);
-
-                    orderLine.setCourse(course);
-                    orderLines.add(orderLine);
+                    orderLines.add(ResultSetMapper.mapToOrderLine(rs));
                 }
             }
         } catch (SQLException e) {

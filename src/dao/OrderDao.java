@@ -151,13 +151,7 @@ public class OrderDao implements IDao<Order>{
                     orderLine.setQuantity(rs.getInt("ol_quantity"));
                     orderLine.setUnitPrice(rs.getDouble("ol_unitPrice"));
 
-                    Course course = new Course();
-                    course.setId(rs.getLong("id_Course"));
-                    course.setName(rs.getString("co_name"));
-                    course.setDescription(rs.getString("co_description"));
-                    course.setDuration(rs.getInt("co_duration"));
-                    course.setType(rs.getString("co_type"));
-                    course.setPrice(rs.getDouble("co_price"));
+                    Course course = ResultSetMapper.mapToCourse(rs);
 
                     orderLine.setCourse(course);
                     orderLines.add(orderLine);
@@ -191,6 +185,7 @@ public class OrderDao implements IDao<Order>{
 
         return order;
     }
+
 
     @Override
     public Order update(Order entity) {

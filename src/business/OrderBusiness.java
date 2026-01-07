@@ -105,26 +105,26 @@ public class OrderBusiness {
             return;
         }
 
-        System.out.println("\n========== Order Confirmation ==========");
+        System.out.println("\n======================== Order Confirmation =================================");
         System.out.println("Order ID: " + order.getId());
         System.out.println("Date: " + order.getOrderDate());
         System.out.println("Client: " + order.getClient().getFirstName() + " " + order.getClient().getLastName());
         System.out.println("Email: " + order.getClient().getEmail());
-        System.out.println("----------------------------------------");
+        System.out.println("------------------------------------------------------------------------------");
         System.out.println("Items:");
 
         for (OrderLine line : order.getOrderLines()) {
             Course course = line.getCourse();
             double lineTotal = line.getUnitPrice() * line.getQuantity();
-            System.out.printf("  %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
+            System.out.printf("Name: %-20s | Qty: %2d | Unit price: %5.2f € | Total: %5.2f €%n",
                     course.getName(),
                     line.getQuantity(),
                     line.getUnitPrice(),
                     lineTotal);
         }
-        System.out.println("----------------------------------------");
+        System.out.println("------------------------------------------------------------------------------");
         System.out.printf("TOTAL: %.2f €%n", order.getTotalAmount());
-        System.out.println("========================================\n");
+        System.out.println("===============================================================================\n");
     }
 
     /**
@@ -137,14 +137,14 @@ public class OrderBusiness {
             return;
         }
 
-        System.out.println("\n========== Your Orders ==========");
+        System.out.println("\n========================== Your Orders ==========================================");
         for (Order order : orders) {
-            System.out.printf("Order #%-5d | Date: %s | Client: %-20s | Total: %8.2f €%n",
+            System.out.printf("Order n°%-3d | Date: %s | Client: %-15s | Total: %5.2f €%n",
                     order.getId(),
                     order.getOrderDate(),
                     order.getClient().getFirstName() + " " + order.getClient().getLastName(),
                     order.getTotalAmount());
         }
-        System.out.println("=================================\n");
+        System.out.println("==================================================================================\n");
     }
 }

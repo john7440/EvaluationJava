@@ -4,8 +4,6 @@ import dao.DaoFactory;
 import dao.UserDao;
 import entity.User;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +14,7 @@ public class UserBusiness {
     private static final Logger LOGGER = Logger.getLogger(UserBusiness.class.getName());
     private final UserDao userDao;
 
-    public  UserBusiness() throws IOException, ClassNotFoundException {
+    public  UserBusiness(){
         this.userDao = DaoFactory.getUserDao();
     }
 
@@ -26,7 +24,7 @@ public class UserBusiness {
      * @param password user password
      * @return created user or null if login already exists
      */
-    public User createAccount(String login, String password) throws SQLException {
+    public User createAccount(String login, String password){
         //check if login or password are not empty
         if (login == null || login.trim().isEmpty()) {
             LOGGER.log(Level.WARNING, "Login cannot be empty!");
@@ -56,7 +54,7 @@ public class UserBusiness {
      * @param password user password
      * @return authenticated user or null if credentials are invalid
      */
-    public User authenticate(String login, String password) throws SQLException {
+    public User authenticate(String login, String password) {
         if (login == null || password == null) {
             LOGGER.log(Level.WARNING, () ->"Authentication failed for login: " + login);
             return null;

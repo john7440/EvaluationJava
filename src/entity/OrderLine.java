@@ -64,6 +64,6 @@ public class OrderLine {
 
     @Override
     public String toString() {
-        return "Orderline n°" + id + ":\nquantity: " + quantity + "\nunitPrice: " + unitPrice;
+        return "Order line n°" + id + ":\nquantity: " + quantity + "\nunitPrice: " + unitPrice;
     }
 }

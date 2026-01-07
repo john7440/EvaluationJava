@@ -76,10 +76,12 @@ public class Client {
         this.phoneNumber = phoneNumber;
     }
 
+    @SuppressWarnings("unused")
     public List<Order> getOrders() {
         return orders;
     }
 
+    @SuppressWarnings("unused")
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }

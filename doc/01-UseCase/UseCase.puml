@@ -1,33 +1,33 @@
 @startuml
 left to right direction
 
-actor Visiteur
-actor Utilisateur
+actor Visitor
+actor User
 
-rectangle "Système de vente de formations" {
+rectangle "Training Sales System" {
 
- usecase "Se connecter" as AUTH
+ usecase "Login" as AUTH
 
- usecase "Consulter les formations" as UC1
- usecase "Rechercher des formations" as UC2
+ usecase "Browse courses" as UC1
+ usecase "Search courses" as UC2
 
- usecase "Créer un compte" as UC3
+ usecase "Create account" as UC3
 
- usecase "Gérer le panier" as UC5
- usecase "Passer commande" as UC6
- usecase "Consulter mes commandes" as UC7
+ usecase "Manage cart" as UC5
+ usecase "Place order" as UC6
+ usecase "View my orders" as UC7
 
 }
 
-Visiteur -- UC1
-Visiteur -- UC2
-Visiteur -- UC3
+Visitor -- UC1
+Visitor -- UC2
+Visitor -- UC3
 
-Utilisateur -|> Visiteur
+User -|> Visitor
 
-Utilisateur -- UC5
-Utilisateur -- UC6
-Utilisateur -- UC7
+User -- UC5
+User -- UC6
+User -- UC7
 
 UC5 ..> AUTH : <<include>>
 UC6 ..> AUTH : <<include>>

@@ -3,7 +3,6 @@ package dao;
 import config.DatabaseConfig;
 import entity.Course;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +11,23 @@ import java.util.logging.Logger;
 
 /**
 * Dao for Course entity
+ * Singleton pattern is used intentionally
 **/
+@SuppressWarnings("java:S6548")
 public class CourseDao implements IDao<Course>{
     private static final Logger LOGGER = Logger.getLogger(CourseDao.class.getName());
-    private static CourseDao instance;
     private final DatabaseConfig dbConfig;
 
-    private CourseDao() throws IOException, ClassNotFoundException {
+    private CourseDao() {
         this.dbConfig = DatabaseConfig.getInstance();
     }
 
-    public static CourseDao getInstance() throws IOException, ClassNotFoundException {
-        if (instance == null) {
-            instance = new CourseDao();
-            }
-        return instance;
+    private static class SingletonHolder {
+        private static final CourseDao INSTANCE = new CourseDao();
+    }
+
+    public static CourseDao getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

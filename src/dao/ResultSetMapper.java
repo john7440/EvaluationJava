@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Course;
+import entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +30,17 @@ public final class ResultSetMapper {
         course.setType(rs.getString("co_type"));
         course.setPrice(rs.getDouble("co_price"));
         return course;
+    }
+
+    /**
+     * Map ResultSet to User object
+     */
+    public static User mapToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getLong("id_User"));
+        user.setLogin(rs.getString("u_login"));
+        user.setPassword(rs.getString("u_password"));
+        return user;
     }
 
 }

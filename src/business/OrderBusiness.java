@@ -54,7 +54,6 @@ public class OrderBusiness {
         //we convert cart lines to order lines
         for (CartLine cartLine : cart.getCartLines()) {
             OrderLine orderLine = new OrderLine(
-                    order,
                     cartLine.getCourse(),
                     cartLine.getQuantity(),
                     cartLine.getCourse().getPrice()

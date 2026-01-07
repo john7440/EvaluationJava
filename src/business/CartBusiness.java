@@ -8,7 +8,6 @@ import entity.CartLine;
 import entity.Course;
 import entity.User;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,7 @@ public class CartBusiness {
     private final CartDao cartDao;
     private final CourseDao courseDao;
 
-    public CartBusiness() throws IOException, ClassNotFoundException {
+    public CartBusiness(){
         this.cartDao = DaoFactory.getCartDao();
         this.courseDao = DaoFactory.getCourseDao();
     }
@@ -137,7 +136,7 @@ public class CartBusiness {
         for (CartLine line : cart.getCartLines()) {
             Course course = line.getCourse();
             double lineTotal = course.getPrice() * line.getQuantity();
-            System.out.printf("ID:[%d] %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
+            System.out.printf("ID:%d | Name: %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
                     line.getId(),
                     course.getName(),
                     line.getQuantity(),

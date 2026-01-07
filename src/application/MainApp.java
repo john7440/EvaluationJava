@@ -186,7 +186,7 @@ public class MainApp {
     /**
      * Search courses by keyword
      */
-    private void searchCoursesByKeyword() throws SQLException {
+    private void searchCoursesByKeyword() {
         System.out.print("\nEnter search keyword: ");
         String keyword = scanner.nextLine();
 
@@ -197,7 +197,7 @@ public class MainApp {
     /**
      * Filter courses by type (PRESENTIEL or DISTANCIEL)
      */
-    public void filterCoursesByType() throws SQLException {
+    public void filterCoursesByType() {
         System.out.println("\nSelect course type:");
         System.out.println("1. PRESENTIEL");
         System.out.println("2. DISTANCIEL");
@@ -378,7 +378,7 @@ public class MainApp {
     /**
      * View user's orders
      */
-    private void viewMyOrders() throws SQLException{
+    private void viewMyOrders(){
         List<Order> orders = orderBusiness.findOrdersByUserId(currentUser.getId());
 
         if (orders == null || orders.isEmpty()) {

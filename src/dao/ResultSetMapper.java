@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Cart;
 import entity.Client;
 import entity.Course;
 import entity.User;
@@ -56,6 +57,16 @@ public final class ResultSetMapper {
         client.setAddress(rs.getString("cl_address"));
         client.setPhoneNumber(rs.getString("cl_phoneNumber"));
         return client;
+    }
+
+    /**
+     * Map ResultSet to Cart object
+     */
+    public static Cart mapToCart(ResultSet rs) throws SQLException {
+        Cart cart = new Cart();
+        cart.setId(rs.getLong("id_Cart"));
+        cart.setCreatedDate(rs.getTimestamp("ca_createdDate"));
+        return cart;
     }
 
 }

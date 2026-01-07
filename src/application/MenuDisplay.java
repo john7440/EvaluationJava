@@ -44,6 +44,6 @@ public final class MenuDisplay {
     }
 
     public static void displayGoodbye() {
-        System.out.println("\nThank you for using Training Sales Application!");
+        System.out.println("\nThank you for using our application!");
     }
 }

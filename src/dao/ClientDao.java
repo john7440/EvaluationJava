@@ -29,17 +29,6 @@ public class ClientDao implements IDao<Client> {
         return ClientDao.SingletonHolder.INSTANCE;
     }
 
-    private Client mapResultSetToClient(ResultSet rs) throws SQLException {
-        Client client = new Client();
-        client.setId(rs.getLong("id_Client"));
-        client.setFirstName(rs.getString("cl_firstName"));
-        client.setLastName(rs.getString("cl_lastName"));
-        client.setEmail(rs.getString("cl_email"));
-        client.setAddress(rs.getString("cl_address"));
-        client.setPhoneNumber(rs.getString("cl_phoneNumber"));
-        return client;
-    }
-
     public Client findByEmail(String email){
         String sql = "select c.* from client c where cl_email = ?";
 
@@ -49,7 +38,7 @@ public class ClientDao implements IDao<Client> {
             stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()){
                 if (rs.next()) {
-                    return mapResultSetToClient(rs);
+                    return ResultSetMapper.mapToClient(rs);
                 }
             }
         } catch (SQLException e) {
@@ -98,6 +87,20 @@ public class ClientDao implements IDao<Client> {
 
     @Override
     public Client findById(Long id) {
+        String sql = "SELECT c.* FROM Client c WHERE id_Client = ?";
+
+        try(Connection connection = dbConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)){
+
+            statement.setLong(1, id);
+            try(ResultSet rs = statement.executeQuery()){
+                if (rs.next()){
+                    return ResultSetMapper.mapToClient(rs);
+                }
+            }
+        } catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Error finding client by ID", e);
+        }
         return null;
     }
 

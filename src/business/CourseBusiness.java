@@ -88,15 +88,15 @@ public class CourseBusiness {
             return;
         }
 
-        System.out.println("\n========== Available Courses ==========");
+        System.out.println("\n======================== Available Courses ================================");
         for (Course course : courses) {
-            System.out.printf("%-5d | %-30s | %-12s | %2d days | %8.2f €%n",
+            System.out.printf("ID: %-5d | %-22s | %-12s | %2d days | %5.2f €%n",
                     course.getId(),
                     course.getName(),
                     course.getType(),
                     course.getDuration(),
                     course.getPrice());
         }
-        System.out.println("========================================\n");
+        System.out.println("==========================================================================\n");
     }
 }

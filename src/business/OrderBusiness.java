@@ -5,7 +5,6 @@ import dao.DaoFactory;
 import dao.OrderDao;
 import entity.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +15,7 @@ public class OrderBusiness {
     private final ClientDao clientDao;
     private final CartBusiness cartBusiness;
 
-    public OrderBusiness() throws IOException, ClassNotFoundException {
+    public OrderBusiness() {
         this.orderDao = DaoFactory.getOrderDao();
         this.clientDao = DaoFactory.getClientDao();
         this.cartBusiness = new CartBusiness();

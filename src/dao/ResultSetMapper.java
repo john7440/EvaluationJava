@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Client;
 import entity.Course;
 import entity.User;
 
@@ -41,6 +42,20 @@ public final class ResultSetMapper {
         user.setLogin(rs.getString("u_login"));
         user.setPassword(rs.getString("u_password"));
         return user;
+    }
+
+    /**
+     * Map ResultSet to Client object
+     */
+    public static Client mapToClient(ResultSet rs) throws SQLException {
+        Client client = new Client();
+        client.setId(rs.getLong("id_Client"));
+        client.setFirstName(rs.getString("cl_firstName"));
+        client.setLastName(rs.getString("cl_lastName"));
+        client.setEmail(rs.getString("cl_email"));
+        client.setAddress(rs.getString("cl_address"));
+        client.setPhoneNumber(rs.getString("cl_phoneNumber"));
+        return client;
     }
 
 }

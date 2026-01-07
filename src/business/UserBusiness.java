@@ -31,8 +31,8 @@ public class UserBusiness {
             return null;
         }
 
-        if (password == null || password.trim().isEmpty()) {
-            LOGGER.log(Level.WARNING, "Password cannot be empty!");
+        if (password == null || password.trim().isEmpty() || password.length() < 6) {
+            LOGGER.log(Level.WARNING, "Password must be 6 characters long or more!");
             return null;
         }
 

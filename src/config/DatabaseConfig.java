@@ -11,35 +11,40 @@ import java.util.logging.Logger;
 
 /**
  * Database configuration using Singleton pattern
+ * Singleton is required to ensure a single shared configuration instance
+ * across all DAO objects as per project specifications
  */
+@SuppressWarnings("java:S6548")
 public class DatabaseConfig {
     private static final Logger LOGGER = Logger.getLogger(DatabaseConfig.class.getName());
-    private static DatabaseConfig instance;
-    private Properties properties;
+    private final Properties properties;
 
-    private DatabaseConfig() throws IOException, ClassNotFoundException {
+    private DatabaseConfig(){
+        properties =  new Properties();
         loadProperties();
     }
 
-    public static DatabaseConfig getInstance() throws IOException, ClassNotFoundException {
-        if (instance == null) {
-            instance = new DatabaseConfig();
-        }
-        return instance;
+
+    private static class SingletonHolder {
+        private static final DatabaseConfig INSTANCE = new DatabaseConfig();
     }
 
-    private void loadProperties() throws IOException, ClassNotFoundException {
-        properties = new Properties();
+    public static DatabaseConfig getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    private void loadProperties() {
         try (InputStream input = getClass().getClassLoader()
                 .getResourceAsStream("database.properties")) {
             if (input == null) {
                 LOGGER.log(Level.SEVERE, "Unable to find database.properties");
-                throw new RuntimeException("Configuration file not found");
+                throw new ConfigurationException("Configuration file not found");
             }
-            assert properties != null;
             properties.load(input);
             Class.forName(properties.getProperty("db.driver"));
             LOGGER.log(Level.INFO, "Database configuration loaded successfully");
+        } catch (IOException | ClassNotFoundException e) {
+            throw new ConfigurationException("Failed to load database configuration", e);
         }
     }
 
@@ -56,6 +61,5 @@ public class DatabaseConfig {
         LOGGER.log(Level.FINE, "Database connection established");
         return connection;
     }
-
 
 }

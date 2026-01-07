@@ -32,6 +32,7 @@ class CartLine {
 class Order {
   - orderDate : Date
   - totalAmount : double
+  + calculateTotalAmount()
 }
 
 class OrderLine {
@@ -42,7 +43,7 @@ class OrderLine {
 User "1" -- "0..1" Cart : possess >
 User "1" -- "*" Order : achieves >
 
-Client "1" -- "*" Order : concerns
+Client "1" -- "*" Order : concerns >
 
 Cart "1" -- "*" CartLine : contains >
 Course "1" -- "*" CartLine : appears in >

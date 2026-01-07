@@ -72,6 +72,6 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course: " + name + "\nduration: " + duration + "min\ntype: " + type + "\nprice: " + price + "€";
+        return "Course: " + name + "\nduration: " + duration + "day(s)\ntype: " + type + "\nprice: " + price + "€";
     }
 }

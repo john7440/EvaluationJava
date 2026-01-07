@@ -40,6 +40,76 @@ public class MenuHandler {
         return currentUser != null ? currentUser.getLogin() : "";
     }
 
-    //--------------------------------
+    //-------------------------------------------------------------------------
     //menus
+
+    /**
+     * Handle visitor menu choice
+     */
+    public boolean handleVisitorMenu(int choice) {
+        switch (choice) {
+            case 1:
+                viewAllCourses();
+                break;
+            case 2:
+                searchCoursesByKeyword();
+                break;
+            case 3:
+                filterCoursesByType();
+                break;
+            case 4:
+                createAccount();
+                break;
+            case 5:
+                login();
+                break;
+            case 0:
+                return false;
+            default:
+                System.out.println("Invalid option. Please try again.");
+        }
+        return true;
+    }
+
+    /**
+     * Handle user menu choice
+     */
+    public boolean handleUserMenu(int choice) {
+        switch (choice) {
+            case 1:
+                viewAllCourses();
+                break;
+            case 2:
+                searchCoursesByKeyword();
+                break;
+            case 3:
+                filterCoursesByType();
+                break;
+            case 4:
+                viewCart();
+                break;
+            case 5:
+                addCourseToCart();
+                break;
+            case 6:
+                removeCourseFromCart();
+                break;
+            case 7:
+                placeOrder();
+                break;
+            case 8:
+                viewMyOrders();
+                break;
+            case 9:
+                logout();
+                break;
+            case 0:
+                return false;
+            default:
+                System.out.println("Invalid option. Please try again.");
+        }
+        return true;
+    }
+
+    //----------------------------------------------------------------------------
 }

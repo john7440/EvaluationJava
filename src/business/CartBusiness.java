@@ -132,7 +132,7 @@ public class CartBusiness {
             return;
         }
 
-        System.out.println("\n========== Your Cart ==========");
+        System.out.println("\n========================== Your Cart ================================");
         for (CartLine line : cart.getCartLines()) {
             Course course = line.getCourse();
             double lineTotal = course.getPrice() * line.getQuantity();
@@ -143,9 +143,9 @@ public class CartBusiness {
                     course.getPrice(),
                     lineTotal);
         }
-        System.out.println("--------------------------------");
+        System.out.println("-------------------------------------------------------------------------");
         System.out.printf("TOTAL: %.2f €%n", cart.getTotalAmount());
-        System.out.println("================================\n");
+        System.out.println("=========================================================================\n");
         }
 }
 

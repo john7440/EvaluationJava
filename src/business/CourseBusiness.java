@@ -67,14 +67,14 @@ public class CourseBusiness {
             return;
         }
 
-        System.out.println("\n========== Course Details ==========");
+        System.out.println("\n=============== Course Details ================");
         System.out.println("ID: " + course.getId());
         System.out.println("Name: " + course.getName());
         System.out.println("Description: " + course.getDescription());
         System.out.println("Duration: " + course.getDuration() + " days");
         System.out.println("Type: " + course.getType());
         System.out.println("Price: " + String.format("%.2f", course.getPrice()) + " €");
-        System.out.println("====================================\n");
+        System.out.println("==================================================\n");
 
     }
 

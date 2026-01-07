@@ -107,4 +107,20 @@ public final class ResultSetMapper {
         return cartLine;
     }
 
+    /**
+     * Map ResultSet to OrderLine object with Course
+     */
+    public static OrderLine mapToOrderLine(ResultSet rs) throws SQLException {
+        OrderLine orderLine = new OrderLine();
+        orderLine.setId(rs.getLong("id_OrderLine"));
+        orderLine.setQuantity(rs.getInt("ol_quantity"));
+        orderLine.setUnitPrice(rs.getDouble("ol_unitPrice"));
+
+        //course
+        Course course = mapToCourse(rs);
+        orderLine.setCourse(course);
+
+        return orderLine;
+    }
+
 }

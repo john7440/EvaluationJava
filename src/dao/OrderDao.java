@@ -3,7 +3,7 @@ package dao;
 import config.DatabaseConfig;
 import entity.*;
 
-import java.io.IOException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +12,26 @@ import java.util.logging.Logger;
 
 /**
  * Dao for Order entity
+ * Singleton pattern is intentionally used
  */
+@SuppressWarnings("java:S6548")
 public class OrderDao implements IDao<Order>{
     private static final Logger LOGGER = Logger.getLogger(OrderDao.class.getName());
-    private static OrderDao instance;
     private final DatabaseConfig dbConfig;
 
-    private OrderDao() throws IOException, ClassNotFoundException {
+    private OrderDao(){
         this.dbConfig = DatabaseConfig.getInstance();
     }
 
-    public static OrderDao getInstance() throws IOException, ClassNotFoundException {
-        if (instance == null) {
-            instance = new OrderDao();
-        }
-        return instance;
+    private static class SingletonHolder {
+        private static final OrderDao INSTANCE = new OrderDao();
     }
+
+    public static OrderDao getInstance(){
+        return SingletonHolder.INSTANCE;
+    }
+    //--------------------------------------------------
+    //methods
 
     @Override
     public Order save(Order order) {
@@ -61,13 +65,18 @@ public class OrderDao implements IDao<Order>{
                     statement.setDouble(2, ol.getUnitPrice());
                     statement.setLong(3, order.getId());
                     statement.setLong(4, ol.getCourse().getId());
-                    statement.executeUpdate();
+                    statement.addBatch();
+
+                    int[] results = statement.executeBatch();
 
                     try (ResultSet rs = statement.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            ol.setId(rs.getLong(1));
+                        int index = 0;
+                        while(rs.next() && index < order.getOrderLines().size()){
+                            order.getOrderLines().get(index).setId(rs.getLong(1));
+                            index++;
                         }
                     }
+                    LOGGER.log(Level.INFO, () -> results.length + " order lines inserted");
                 }
             }
             connection.commit();
@@ -77,6 +86,7 @@ public class OrderDao implements IDao<Order>{
             if (connection != null) {
                 try {
                     connection.rollback();
+                    LOGGER.log(Level.WARNING, "Transaction rolled back");
                 } catch (SQLException ex) {
                     LOGGER.log(Level.SEVERE, "Could not rollback transaction", ex);
                 }
@@ -94,6 +104,8 @@ public class OrderDao implements IDao<Order>{
         }
         return null;
     }
+
+    //---------------------------------------------------------
 
     public List<Order> findByUserId(Long userId){
         String sql = "SELECT o.*, u.*, c.* FROM `Order` o " +
@@ -119,6 +131,8 @@ public class OrderDao implements IDao<Order>{
         }
         return orders;
     }
+
+    //--------------------------------------------------------------
 
     private List<OrderLine> findOrderLinesByOrderId(Long orderId) {
         String sql = "SELECT ol.*, c.* FROM OrderLine ol " +
@@ -155,6 +169,8 @@ public class OrderDao implements IDao<Order>{
         return orderLines;
     }
 
+    //------------------------------------------------------------------
+
     private Order mapResultSetToOrder(ResultSet rs) throws SQLException {
         Order order = new Order();
         order.setId(rs.getLong("id_Order"));
@@ -185,6 +201,8 @@ public class OrderDao implements IDao<Order>{
     public boolean delete(Long id) {
         return false;
     }
+
+    //-----------------------------------------------------------
 
     @Override
     public Order findById(Long id) {

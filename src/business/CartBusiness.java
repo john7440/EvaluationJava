@@ -136,7 +136,7 @@ public class CartBusiness {
         for (CartLine line : cart.getCartLines()) {
             Course course = line.getCourse();
             double lineTotal = course.getPrice() * line.getQuantity();
-            System.out.printf("ID:%d | Name: %-30s | Qty: %2d | Unit: %8.2f € | Total: %8.2f €%n",
+            System.out.printf("ID: %2d | Name: %-20s | Qty: %2d | Unit price: %5.2f € | Total: %5.2f €%n",
                     line.getId(),
                     course.getName(),
                     line.getQuantity(),

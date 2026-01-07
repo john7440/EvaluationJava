@@ -32,6 +32,19 @@ public class CartDao implements IDao<Cart> {
         return SingletonHolder.INSTANCE;
     }
 
+    //----------------------------------
+    //map
+
+    private Cart mapResultSetToCart(ResultSet rs) throws SQLException {
+        Cart cart = new Cart();
+        cart.setId(rs.getLong("id_Cart"));
+        cart.setCreatedDate(rs.getTimestamp("ca_createdDate"));
+        return cart;
+    }
+
+    //------------------------------------------
+    //methods
+
     @Override
     public Cart save(Cart cart){
         String sql = "INSERT INTO cart(ca_createdDate, id_User) VALUES (?, ?)";
@@ -75,13 +88,6 @@ public class CartDao implements IDao<Cart> {
     @Override
     public List<Cart> findAll() {
         return List.of();
-    }
-
-    private Cart mapResultSetToCart(ResultSet rs) throws SQLException {
-        Cart cart = new Cart();
-        cart.setId(rs.getLong("id_Cart"));
-        cart.setCreatedDate(rs.getTimestamp("ca_createdDate"));
-        return cart;
     }
 
     public Cart findByUserId(Long userId) throws SQLException {
@@ -178,13 +184,7 @@ public class CartDao implements IDao<Cart> {
                     cartLine.setId(rs.getLong("id_CartLine"));
                     cartLine.setQuantity(rs.getInt("car_quantity"));
 
-                    Course course = new Course();
-                    course.setId(rs.getLong("id_Course"));
-                    course.setName(rs.getString("co_name"));
-                    course.setDescription(rs.getString("co_description"));
-                    course.setDuration(rs.getInt("co_duration"));
-                    course.setType(rs.getString("co_type"));
-                    course.setPrice(rs.getDouble("co_price"));
+                    Course course = ResultSetMapper.mapToCourse(rs);
 
                     cartLine.setCourse(course);
                     cartLines.add(cartLine);

@@ -55,7 +55,7 @@ public class CourseDao implements IDao<Course>{
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()){
                 if (rs.next()){
-                    return  mapResultSetToCourse(rs);
+                    return  ResultSetMapper.mapToCourse(rs);
                 }
             }
         } catch (SQLException e) {
@@ -64,16 +64,6 @@ public class CourseDao implements IDao<Course>{
         return null;
     }
 
-    private Course mapResultSetToCourse(ResultSet rs) throws SQLException {
-        Course course = new Course();
-        course.setId(rs.getLong("id_Course"));
-        course.setName(rs.getString("co_name"));
-        course.setDescription(rs.getString("co_description"));
-        course.setDuration(rs.getInt("co_duration"));
-        course.setType(rs.getString("co_type"));
-        course.setPrice(rs.getDouble("co_price"));
-        return course;
-    }
 
     @Override
     public List<Course> findAll() {
@@ -85,7 +75,7 @@ public class CourseDao implements IDao<Course>{
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                courses.add(mapResultSetToCourse(rs));
+                courses.add(ResultSetMapper.mapToCourse(rs));
             }
         } catch (SQLException e){
             LOGGER.log(Level.SEVERE, "Error finding all courses", e);
@@ -104,7 +94,7 @@ public class CourseDao implements IDao<Course>{
 
             try (ResultSet rs = statement.executeQuery()){
                 while (rs.next()) {
-                    courses.add(mapResultSetToCourse(rs));
+                    courses.add(ResultSetMapper.mapToCourse(rs));
                 }
             }
             LOGGER.log(Level.INFO, () ->"Found " + courses.size() + " courses of type: " + type);
@@ -128,7 +118,7 @@ public class CourseDao implements IDao<Course>{
 
             try (ResultSet rs = statement.executeQuery()){
                 while (rs.next()) {
-                    courses.add(mapResultSetToCourse(rs));
+                    courses.add(ResultSetMapper.mapToCourse(rs));
                 }
             }
             LOGGER.log(Level.INFO, () ->"Found " + courses.size() + " courses with keyword: " + keyword);

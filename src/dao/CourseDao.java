@@ -64,7 +64,6 @@ public class CourseDao implements IDao<Course>{
         return null;
     }
 
-
     @Override
     public List<Course> findAll() {
         String sql = "SELECT c.* FROM course c";

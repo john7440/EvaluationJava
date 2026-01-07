@@ -3,7 +3,6 @@ package dao;
 import config.DatabaseConfig;
 import entity.Cart;
 import entity.CartLine;
-import entity.Course;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -170,14 +169,7 @@ public class CartDao implements IDao<Cart> {
             stmt.setLong(1, cartId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    CartLine cartLine = new CartLine();
-                    cartLine.setId(rs.getLong("id_CartLine"));
-                    cartLine.setQuantity(rs.getInt("car_quantity"));
-
-                    Course course = ResultSetMapper.mapToCourse(rs);
-
-                    cartLine.setCourse(course);
-                    cartLines.add(cartLine);
+                    cartLines.add(ResultSetMapper.mapToCartLine(rs));
                 }
             }
         } catch (SQLException e) {

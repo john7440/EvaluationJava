@@ -56,6 +56,7 @@ public class Cart {
         this.cartLines = cartLines;
     }
 
+    @SuppressWarnings("unused")
     public void addCartLine(CartLine cartLine){
         this.cartLines.add(cartLine);
         cartLine.setCart(this);

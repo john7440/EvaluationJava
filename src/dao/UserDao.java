@@ -3,7 +3,6 @@ package dao;
 import config.DatabaseConfig;
 import entity.User;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,25 +11,27 @@ import java.util.logging.Logger;
 
 /**
  * Dao for User entity
+ * Singleton pattern is intentionally used
  */
+@SuppressWarnings("java:S6548")
 public class UserDao implements IDao<User>{
     private static final Logger LOGGER = Logger.getLogger(UserDao.class.getName());
-    private static UserDao instance;
     private final DatabaseConfig dbConfig;
 
-    private UserDao() throws IOException, ClassNotFoundException {
+    private UserDao() {
         this.dbConfig = DatabaseConfig.getInstance();
     }
 
-    public static UserDao getInstance() throws IOException, ClassNotFoundException {
-        if (instance == null) {
-            instance = new UserDao();
-        }
-        return instance;
+    private static class SingletonHolder {
+        private static final UserDao INSTANCE = new UserDao();
+    }
+
+    public static UserDao getInstance(){
+        return SingletonHolder.INSTANCE;
     }
 
     @Override
-    public User save(User user) throws SQLException {
+    public User save(User user) {
         String sql = "INSERT INTO user(u_login, u_password) VALUES (?, ?)";
 
         try (Connection connect = dbConfig.getConnection();
@@ -45,7 +46,7 @@ public class UserDao implements IDao<User>{
                 try (ResultSet rs =  statement.getGeneratedKeys()){
                     if (rs.next()) {
                         user.setId(rs.getLong(1));
-                        LOGGER.log(Level.INFO, "User saved with id " + user.getId());
+                        LOGGER.log(Level.INFO, () ->"User saved with id " + user.getId());
                     }
                 }
             }
@@ -58,7 +59,7 @@ public class UserDao implements IDao<User>{
         return user;
     }
 
-    public User findByLogin(String login) throws SQLException {
+    public User findByLogin(String login){
         String sql = "SELECT u.* FROM user u WHERE u_login = ?";
 
         try (Connection connect = dbConfig.getConnection() ;
@@ -92,7 +93,7 @@ public class UserDao implements IDao<User>{
     }
 
     @Override
-    public List<User> findAll() throws  SQLException {
+    public List<User> findAll(){
         String sql = "SELECT u.* FROM user u";
         List<User> users = new ArrayList<>();
 
@@ -109,7 +110,7 @@ public class UserDao implements IDao<User>{
     }
 
     //auth
-    public User authenticate(String login, String password) throws SQLException {
+    public User authenticate(String login, String password){
         String sql = "SELECT u.* FROM user u WHERE u_login = ? AND u_password = ?";
 
         try (Connection connect = dbConfig.getConnection();
@@ -120,7 +121,7 @@ public class UserDao implements IDao<User>{
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    LOGGER.log(Level.INFO, "User authenticated:" + login);
+                    LOGGER.log(Level.INFO, () ->"User authenticated:" + login);
                     return mapResultSetToUser(rs);
                 }
             }
@@ -131,7 +132,7 @@ public class UserDao implements IDao<User>{
         return null;
     }
 
-    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+    private User mapResultSetToUser(ResultSet rs) throws SQLException{
         User user = new User();
         user.setId(rs.getLong("id_User"));
         user.setLogin(rs.getString("u_login"));

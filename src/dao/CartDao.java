@@ -5,8 +5,6 @@ import entity.Cart;
 import entity.CartLine;
 import entity.Course;
 
-
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +13,23 @@ import java.util.logging.Logger;
 
 /**
  * Dao for Cart entity
+ * Singleton pattern is used intentionally
  */
+@SuppressWarnings("java:S6548")
 public class CartDao implements IDao<Cart> {
     private static final Logger LOGGER = Logger.getLogger(CartDao.class.getName());
-    private static CartDao instance;
     private final DatabaseConfig dbConfig;
 
-    private CartDao() throws IOException, ClassNotFoundException {
+    private CartDao(){
         this.dbConfig = DatabaseConfig.getInstance();
     }
 
-    public static CartDao getInstance() throws IOException, ClassNotFoundException {
-        if (instance == null) {
-            instance = new CartDao();
-        }
-        return instance;
+    private static class SingletonHolder{
+        private static final CartDao INSTANCE = new CartDao();
+    }
+
+    public static CartDao getInstance(){
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

@@ -54,6 +54,6 @@ public class CartLine {
 
     @Override
     public String toString(){
-        return "Cartline n°" + id + ":\nquantity: " + quantity +"\ncourse: " + course;
+        return "Cart line n°" + id + ":\nquantity: " + quantity +"\ncourse: " + course;
     }
 }

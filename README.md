@@ -73,26 +73,24 @@ The application follows a **multi-layered architecture**:
 ### 1. Clone the repository
 
 ```bash
-git clone <https://github.com/john7440/EvaluationJava.git>
-cd training-sales-app
+git clone https://github.com/john7440/EvaluationJava.git
+cd EvaluationJava
 ```
-### 2. Download dependencies
+### 2. Open in IntelliJ IDEA
 
-```bash
-# Create lib directory
-mkdir lib
-cd lib
+1. File → Open → Select the project folder
+2. Wait for IntelliJ to index the project
+3. Right-click on `lib/` folder → Add as Library
+4. Click OK when prompted
 
-# Download MariaDB connector
-wget https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.1.4/mariadb-java-client-3.1.4.jar
-```
-### 3. Compile the project
-```bash
-javac -d bin -cp ".:lib/*" src/**/*.java
-```
+Note : The MariaDB JDBC driver (mariadb-java-client.jar) is already included in the lib/ folder
+
 ## Database Setup
 
-Copy and paste the content Of SQL -> ScriptSQL.txt into a MySQL Client 
+Copy and paste the content Of SQL -> ScriptSQL.txt into a MySQL Client, or use:
+```bash
+mysql -u training_user -p training_sales_db < doc/SQL/ScriptSQL.txt
+```
 
 ## Configuration
 
@@ -103,11 +101,25 @@ db.user=training_user
 db.password=Training@2026
 db.driver=org.mariadb.jdbc.Driver
 ```
+Note: Update credentials if you used different values during database setup !
+
 ## Usage
 
-Run the application
+### Run the application
+
+Option A: From IntelliJ IDEA (Recommended)
+1. Navigate to `src/application/MainApp.java`
+2. Right-click on the file
+3. Select Run 'MainApp.main()'
+
+Option B: From Command Line
+Compile (if needed):
 ```bash
-java -cp "bin:resources:lib/*" application.MainApp
+javac -d bin -cp ".:lib/*" src/**/*.java
+```
+Then run (for Windows users):
+```bash
+java -cp "bin;resources;lib/*" application.MainApp
 ```
 #### Test accounts
 For testing purposes, you can create a new account through the application

@@ -3,7 +3,6 @@ package dao;
 import config.DatabaseConfig;
 import entity.Client;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,21 +10,23 @@ import java.util.logging.Logger;
 
 /**
  * Dao  for Client entity
+ * Singleton pattern is used intentionally
  */
+@SuppressWarnings("java:S6548")
 public class ClientDao implements IDao<Client> {
     private static final Logger LOGGER = Logger.getLogger(ClientDao.class.getName());
-    private static ClientDao instance;
     private final DatabaseConfig dbConfig;
 
-    private ClientDao() throws IOException, ClassNotFoundException {
+    private ClientDao(){
         this.dbConfig = DatabaseConfig.getInstance();
     }
 
-    public static ClientDao getInstance() throws IOException, ClassNotFoundException {
-        if (instance == null) {
-            instance = new ClientDao();
-        }
-        return instance;
+    private static class SingletonHolder{
+        private static final ClientDao INSTANCE = new ClientDao();
+    }
+
+    public static ClientDao getInstance(){
+        return ClientDao.SingletonHolder.INSTANCE;
     }
 
     private Client mapResultSetToClient(ResultSet rs) throws SQLException {

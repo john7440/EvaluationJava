@@ -155,7 +155,7 @@ training-sales-app/
 │       └── ConfigurationException.java # Configuration exception
 ├── resources/
 │   └── database.properties           # Database configuration file
-├── docs/
+├── doc/
 │ ├── 01-UseCase/
 │ │ ├── UseCase.png                   # Use case diagram (PNG)
 │ │ └── UseCase.puml                  # Use case diagram (PlantUML)

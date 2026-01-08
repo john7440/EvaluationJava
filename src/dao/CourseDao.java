@@ -105,7 +105,7 @@ public class CourseDao implements IDao<Course>{
     }
 
     public List<Course> findByKeyword(String keyword) {
-        String sql = "SELECT c.* FROM course c WHERE co_name LIKE ? OR co_description LIKE ? ";
+        String sql = "SELECT c.* FROM course c WHERE co_name LIKE ?";
         List<Course> courses = new ArrayList<>();
 
         try(Connection connect = dbConfig.getConnection();
@@ -113,7 +113,6 @@ public class CourseDao implements IDao<Course>{
 
             String searchPattern = "%" + keyword + "%";
             statement.setString(1, searchPattern);
-            statement.setString(2, searchPattern);
 
             try (ResultSet rs = statement.executeQuery()){
                 while (rs.next()) {

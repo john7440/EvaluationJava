@@ -1,34 +1,58 @@
 @startuml
-actor User
+actor "Authenticated User" as User
 participant "System" as Sys
-database "Database" as DB
+database "Database System" as DB
 
 activate User
-User -> Sys : placeOrder()
+User -> Sys : initiate PlaceOrder()
 activate Sys
 
-Sys -> DB : getCart()
+Sys -> DB : retrieveCart()
 activate DB
 DB --> Sys : cart
 deactivate DB
 
-alt cart is empty
-    Sys --> User : error("Cart is empty")
+Sys -> Sys : checkIfCartNotEmpty()
+
+alt [A1] Empty Cart
+    Sys --> User : displayError("Cart is empty")
+    deactivate Sys
 else cart is not empty
     Sys --> User : requestClientInformation()
-    User -> Sys : submitClientInformation()
+    User -> Sys : enterAndConfirmClientInformation()
 
-    Sys -> DB : createOrder()
-    activate DB
-    DB --> Sys : order
-    deactivate DB
+    alt [A2] Invalid Client Information
+        Sys --> User : displayValidationError()
+        Sys --> User : requestClientInformation()
+    else valid client information
+        alt [A3] Database Error
+            Sys -> DB : createOrderWithOrderLines()
+            activate DB
+            DB --> Sys : error("Unable to process order")
+            deactivate DB
+            Sys -> DB : rollbackTransaction()
+            activate DB
+            deactivate DB
+            Sys --> User : displayError("Transaction rolled back - Cart preserved")
+        else no database error
+            Sys -> DB : createOrderWithOrderLines()
+            activate DB
+            DB --> Sys : orderCreated
+            deactivate DB
 
-    Sys -> DB : clearCart()
-    activate DB
-    DB --> Sys : cartCleared
-    deactivate DB
+            Sys -> DB : clearCart()
+            activate DB
+            DB --> Sys : cartCleared
+            deactivate DB
 
-    Sys --> User : orderConfirmation()
+            Sys --> User : displayOrderConfirmation()
+        end
+    end
+end
+
+alt [A4] User Cancels
+    User -> Sys : cancel()
+    Sys --> User : returnToMainMenu("Cart preserved")
 end
 
 deactivate Sys

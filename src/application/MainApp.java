@@ -15,6 +15,7 @@ public class MainApp {
     // testuser : password
     // john.doe : test2026
     // test123 : louvre123
+    // note: not implemented in the original script SQL
 
     public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);

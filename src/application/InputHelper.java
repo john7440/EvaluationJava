@@ -2,6 +2,7 @@ package application;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -22,6 +23,24 @@ import java.util.logging.Logger;
     public static String readString(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
+    }
+
+    /**
+     * Reads an integer input from user with validation
+     * @param prompt Message to display
+     * @return Valid integer input
+     */
+    public static int readInt(String prompt) {
+        while(true){
+            try{
+                System.out.print(prompt);
+                String input = scanner.nextLine().trim();
+                return Integer.parseInt(input);
+            } catch(NumberFormatException e){
+                System.out.println("Invalid input! Please enter a valid integer!");
+                LOGGER.log(Level.WARNING, "Invalid integer input", e);
+            }
+        }
     }
 
 }

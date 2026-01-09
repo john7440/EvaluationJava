@@ -67,6 +67,21 @@ public class CourseBusiness {
             throw new SecurityException("Access denied: Administrator privileges required!");
         }
     }
+    
+    public Course createCourse(User admin, String name, String description, int duration, String type, double price){
+        checkAdminRights(admin);
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDuration(duration);
+        course.setType(type);
+        course.setPrice(price);
+
+        Course createdCourse = courseDao.save(course);
+        LOGGER.log(Level.INFO, ()->"Created course " + createdCourse.getName() + " with id: " + createdCourse.getId());
+        return createdCourse;
+    }
 
 
     /**

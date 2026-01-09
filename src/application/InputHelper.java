@@ -189,4 +189,11 @@ import java.util.logging.Logger;
         return defaultType;
     }
 
+    /**
+     * Closes the scanner
+     */
+    public static void close() {
+        scanner.close();
+    }
+
 }

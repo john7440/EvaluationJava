@@ -50,6 +50,7 @@ public class AdminMenu {
                 }
                 case 0 -> {
                     System.out.println("Thank you for using our Application! Goodbye!");
+                    InputHelper.close();
                     System.exit(0);
                 }
                 default -> System.out.println("Invalid choice! Please try again!");

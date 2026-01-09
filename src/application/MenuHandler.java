@@ -67,6 +67,7 @@ public class MenuHandler {
                 login();
                 break;
             case 0:
+                InputHelper.close();
                 return false;
             default:
                 System.out.println("Invalid option. Please try again.");
@@ -110,6 +111,7 @@ public class MenuHandler {
                 openAdminPanel();
                 break;
             case 0:
+                InputHelper.close();
                 return false;
             default:
                 System.out.println("Invalid option. Please try again.");
@@ -144,12 +146,12 @@ public class MenuHandler {
      */
     public void filterCoursesByType() {
         System.out.println("\nSelect course type:");
-        System.out.println("1. PRESENTIEL");
-        System.out.println("2. DISTANCIEL");
+        System.out.println("1. IN-PERSON");
+        System.out.println("2. REMOTE");
         System.out.print("Enter your choice: ");
 
         int choice = readInt();
-        String type = choice  == 1 ? "PRESENTIEL" : "DISTANCIEL";
+        String type = choice  == 1 ? "IN-PERSON" : "REMOTE";
 
         List<Course> courses = courseBusiness.filterByType(type);
         courseBusiness.displayCourseList(courses);

@@ -38,6 +38,7 @@ public final class MenuDisplay {
         System.out.println("7. Place order");
         System.out.println("8. View my orders");
         System.out.println("9. Logout");
+        System.out.println("10. Admin Panel");
         System.out.println("0. Exit");
         System.out.println("====================================================================");
         System.out.print("Choose an option: ");

@@ -106,6 +106,9 @@ public class MenuHandler {
             case 9:
                 logout();
                 break;
+            case 10:
+                openAdminPanel();
+                break;
             case 0:
                 return false;
             default:
@@ -209,6 +212,19 @@ public class MenuHandler {
         currentUser = null;
         currentCart = null;
         System.out.println("\nYou have been logged out!");
+    }
+
+    /**
+     * Opens administrator panel
+     */
+    private void openAdminPanel() {
+        if (currentUser != null && currentUser.isAdmin()) {
+        AdminMenu adminMenu = new AdminMenu(currentUser);
+        adminMenu.displayMenu();
+        } else {
+            System.out.println("\nAccess denied! Administrator privileges required!");
+            LOGGER.log(Level.WARNING, "Unauthorized access attempt to admin panel");
+        }
     }
 
     //-------------------------------

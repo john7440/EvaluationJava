@@ -184,18 +184,15 @@ public class CourseBusiness {
         if (course == null) {
             return "Course not found";
         }
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n=============== Course Details ================");
-        sb.append("ID: ").append(course.getId());
-        sb.append("Name: ").append(course.getName());
-        sb.append("Description: ").append(course.getDescription());
-        sb.append("Duration: ").append(course.getDuration()).append(" days");
-        sb.append("Type: ").append(course.getType());
-        sb.append("Price: ").append(String.format("%.2f", course.getPrice())).append(" €");
-        sb.append("==================================================\n");
 
-        return sb.toString();
+        return "\n=============== Course Details ================" +
+                "ID: " + course.getId() +
+                "Name: " + course.getName() +
+                "Description: " + course.getDescription() +
+                "Duration: " + course.getDuration() + " days" +
+                "Type: " + course.getType() +
+                "Price: " + String.format("%.2f", course.getPrice()) + " €" +
+                "==================================================\n";
     }
 
     /**

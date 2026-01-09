@@ -115,4 +115,19 @@ import java.util.logging.Logger;
         }
     }
 
+    // -------------------------------------------------------------
+    // methods with default as an option
+
+    /**
+     * Reads a string input with default value
+     * @param prompt Message to display
+     * @param defaultValue Default value if user presses Enter
+     * @return User input or default value
+     */
+    public static String readStringOrDefault(String prompt, String defaultValue) {
+        System.out.print(prompt + " [" + defaultValue + "]: ");
+        String input = scanner.nextLine().trim();
+        return input.isEmpty() ? defaultValue : input;
+    }
+
 }

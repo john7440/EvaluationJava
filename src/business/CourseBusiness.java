@@ -179,7 +179,6 @@ public class CourseBusiness {
      * Display course details
      * @param course course to display
      */
-    @SuppressWarnings("unused")
     public String displayCourseDetails(Course course){
         if (course == null) {
             return "Course not found";
@@ -215,5 +214,24 @@ public class CourseBusiness {
                     course.getPrice());
         }
         System.out.println("==========================================================================\n");
+    }
+
+    /**
+     * Finds a course by ID
+     * @param id Course ID
+     * @return Course or null if not found
+     */
+    public Course getCourseById(Long id){
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid course ID!");
+        }
+        Course course = courseDao.findById(id);
+
+        if (course == null) {
+            LOGGER.log(Level.INFO, () -> "No course found with ID: " + id);
+        } else {
+            LOGGER.log(Level.INFO, () -> "Course retrieved with ID: " + id);
+        }
+        return course;
     }
 }

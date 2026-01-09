@@ -1,6 +1,5 @@
 package application;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,6 +57,24 @@ import java.util.logging.Logger;
             if(choice == 2) return "REMOTE";
 
             System.out.println("Invalid choice! Please select 1 or 2!");
+        }
+    }
+
+    /**
+     * Reads a double input from user with validation
+     * @param prompt Message to display
+     * @return Valid double input
+     */
+    public static double readDouble(String prompt) {
+        while(true){
+            try{
+                System.out.print(prompt);
+                String input = scanner.nextLine().trim();
+                return Double.parseDouble(input);
+            }  catch(NumberFormatException e){
+                System.out.println("Invalid input! Please enter a valid number!");
+                LOGGER.log(Level.WARNING, "Invalid double input", e);
+            }
         }
     }
 

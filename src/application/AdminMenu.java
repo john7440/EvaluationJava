@@ -1,8 +1,10 @@
 package application;
 
 import business.CourseBusiness;
+import entity.Course;
 import entity.User;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,13 +36,37 @@ public class AdminMenu {
 
         boolean running = true;
         while (running) {
-            //TODO displayMenuOptions();
+            displayMenuOptions();
 
             int choice = InputHelper.readInt("Enter your choice: ");
 
             switch (choice) {
+                case 1 -> viewAllCourses();
                 default -> System.out.println("Invalid choice! Please try again!");
             }
         }
+    }
+
+    /**
+     * Displays menu options
+     */
+    private void displayMenuOptions() {
+        System.out.println("\n========== ADMIN MENU ==========");
+        System.out.println("1. View all courses");
+        System.out.println("2. Add a new course");
+        System.out.println("3. Update an existing course");
+        System.out.println("4. Delete an existing course");
+        System.out.println("5. View course details");
+        System.out.println("6. Logout");
+        System.out.println("0. Exit");
+        System.out.println("==================================");
+    }
+
+    /**
+     * View all available courses
+     */
+    private void viewAllCourses(){
+        List<Course> courses = courseBusiness.getAllCourses();
+        courseBusiness.displayCourseList(courses);
     }
 }

@@ -180,21 +180,22 @@ public class CourseBusiness {
      * @param course course to display
      */
     @SuppressWarnings("unused")
-    public void displayCourseDetails(Course course){
+    public String displayCourseDetails(Course course){
         if (course == null) {
-            System.out.println("Course not found");
-            return;
+            return "Course not found";
         }
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n=============== Course Details ================");
+        sb.append("ID: ").append(course.getId());
+        sb.append("Name: ").append(course.getName());
+        sb.append("Description: ").append(course.getDescription());
+        sb.append("Duration: ").append(course.getDuration()).append(" days");
+        sb.append("Type: ").append(course.getType());
+        sb.append("Price: ").append(String.format("%.2f", course.getPrice())).append(" €");
+        sb.append("==================================================\n");
 
-        System.out.println("\n=============== Course Details ================");
-        System.out.println("ID: " + course.getId());
-        System.out.println("Name: " + course.getName());
-        System.out.println("Description: " + course.getDescription());
-        System.out.println("Duration: " + course.getDuration() + " days");
-        System.out.println("Type: " + course.getType());
-        System.out.println("Price: " + String.format("%.2f", course.getPrice()) + " €");
-        System.out.println("==================================================\n");
-
+        return sb.toString();
     }
 
     /**

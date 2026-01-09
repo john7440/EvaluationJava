@@ -5,7 +5,6 @@ import entity.Course;
 import entity.User;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,13 +14,12 @@ import java.util.logging.Logger;
 public class AdminMenu {
     private static final Logger LOGGER = Logger.getLogger(AdminMenu.class.getName());
     private final CourseBusiness courseBusiness;
-    private final Scanner scanner;
     private final User admin;
 
     public AdminMenu(User admin) {
         this.admin = admin;
         this.courseBusiness = new CourseBusiness();
-        this.scanner = new Scanner(System.in);
+
     }
 
     /**
@@ -44,6 +42,7 @@ public class AdminMenu {
                 case 1 -> viewAllCourses();
                 case 2 -> addNewCourse();
                 case 3 -> updateCourse();
+                case 4 -> deleteCourse();
                 case 6 -> {
                     System.out.println("Logging out from admin panel...");
                     running = false;
@@ -98,10 +97,10 @@ public class AdminMenu {
             System.out.println(courseBusiness.displayCourseDetails(newCourse));
 
         } catch (SecurityException e){
-            System.out.println("Access denied! " + e.getMessage());
-            LOGGER.log(Level.SEVERE, "Security error", e);
+            System.out.println("Access denied for adding! " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Security error add", e);
         } catch (IllegalArgumentException e){
-            System.out.println("Validation Error: "+  e.getMessage());
+            System.out.println("Validation Error add: "+  e.getMessage());
         } catch (Exception e) {
             System.out.println("Error creating course: " + e.getMessage());
             LOGGER.log(Level.SEVERE, "Error creating course!");
@@ -138,13 +137,51 @@ public class AdminMenu {
             System.out.println(courseBusiness.displayCourseDetails(updatedCourse));
 
         } catch (SecurityException e){
-            System.out.println("Access denied! " + e.getMessage());
-            LOGGER.log(Level.SEVERE, "Security error", e);
+            System.out.println("Access denied for updating! " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Security error update", e);
         } catch (IllegalArgumentException e){
-            System.out.println("Validation Error: "+  e.getMessage());
+            System.out.println("Validation Error update: "+  e.getMessage());
         } catch (Exception e) {
             System.out.println("Error updating course: " + e.getMessage());
             LOGGER.log(Level.SEVERE, "Error updating course", e);
+        }
+    }
+
+    /**
+     * Delete a course
+     */
+    private void deleteCourse(){
+        System.out.println("\n========== DELETE COURSE ==========");
+        try{
+            long id = InputHelper.readLong("Course ID to delete: ");
+            Course existingCourse = courseBusiness.getCourseById(id);
+            if (existingCourse == null){
+                System.out.println("Course with ID: " + id + " not found!");
+                return;
+            }
+
+            System.out.println("\nCourse to delete:");
+            System.out.println(courseBusiness.displayCourseDetails(existingCourse));
+
+            boolean confirmed = InputHelper.readBoolean("Are you sure you want to delete this course?");
+            if (confirmed){
+                boolean deleted = courseBusiness.deleteCourse(admin, id);
+                if (deleted){
+                    System.out.println("\nCourse deleted successfully!");
+                } else {
+                    System.out.println("\nFailed to delete course: " + id);
+                }
+            } else {
+                System.out.println("\nDeletion cancelled!");
+            }
+        } catch (SecurityException e){
+            System.out.println("Access denied for deletion!  " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Security error delete", e);
+        } catch (IllegalArgumentException e){
+            System.out.println("Validation Error delete: "+  e.getMessage());
+        }  catch (Exception e) {
+            System.out.println("Error deleting course: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error deleting course", e);
         }
     }
 }

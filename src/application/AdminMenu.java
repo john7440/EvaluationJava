@@ -43,6 +43,7 @@ public class AdminMenu {
             switch (choice) {
                 case 1 -> viewAllCourses();
                 case 2 -> addNewCourse();
+                case 3 -> updateCourse();
                 case 6 -> {
                     System.out.println("Logging out from admin panel...");
                     running = false;
@@ -126,8 +127,24 @@ public class AdminMenu {
             System.out.println(courseBusiness.displayCourseDetails(existingCourse));
             System.out.println("\nEnter new information (press Enter to keep the current value):");
 
-            //TODO des read pour chaque type avec une option default dans InputHelper
+            String name = InputHelper.readStringOrDefault("Course name", existingCourse.getName());
+            String description = InputHelper.readStringOrDefault("Course description", existingCourse.getDescription());
+            int duration = InputHelper.readIntOrDefault("Duration (in days): ", existingCourse.getDuration());
+            String type = InputHelper.readCourseTypeOrDefault(existingCourse.getType());
+            double price = InputHelper.readDoubleOrDefault("Price (in €): ", existingCourse.getPrice());
 
+            Course updatedCourse = courseBusiness.updateCourse(admin, id, name, description, duration, type, price);
+            System.out.println("\nCourse updated successfully!");
+            System.out.println(courseBusiness.displayCourseDetails(updatedCourse));
+
+        } catch (SecurityException e){
+            System.out.println("Access denied! " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Security error", e);
+        } catch (IllegalArgumentException e){
+            System.out.println("Validation Error: "+  e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error updating course: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error updating course", e);
         }
     }
 }

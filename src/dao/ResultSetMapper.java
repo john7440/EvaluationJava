@@ -69,6 +69,7 @@ public final class ResultSetMapper {
         user.setId(rs.getLong("id_User"));
         user.setLogin(rs.getString("u_login"));
         user.setPassword(rs.getString("u_password"));
+        user.setRole(rs.getString("u_role"));
         return user;
     }
 

@@ -47,7 +47,7 @@ public class CourseBusiness {
      * @return list of courses of specified type
      */
     public List<Course> filterByType(String type){
-        if (type == null || (!type.equalsIgnoreCase("PRESENTIEL") && !type.equalsIgnoreCase("DISTANCIEL"))) {
+        if (type == null || (!type.equalsIgnoreCase("IN-PERSON") && !type.equalsIgnoreCase("REMOTE"))) {
             LOGGER.log(Level.WARNING, () -> "Invalid course type " + type);
             return getAllCourses();
         }

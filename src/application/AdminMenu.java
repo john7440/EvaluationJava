@@ -106,4 +106,28 @@ public class AdminMenu {
             LOGGER.log(Level.SEVERE, "Error creating course!");
         }
     }
+
+    /**
+     * Updates an existing course
+     */
+    private void updateCourse(){
+        System.out.println("\n========== UPDATE COURSE ==========");
+
+        try{
+            long id = InputHelper.readLong("Course ID to update: ");
+
+            Course existingCourse = courseBusiness.getCourseById(id);
+            if (existingCourse == null){
+                System.out.println("Course with ID: " + id + " not found!");
+                return;
+            }
+
+            System.out.println("\nCurrent course information:");
+            System.out.println(courseBusiness.displayCourseDetails(existingCourse));
+            System.out.println("\nEnter new information (press Enter to keep the current value):");
+
+            //TODO des read pour chaque type avec une option default dans InputHelper
+
+        }
+    }
 }

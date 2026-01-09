@@ -118,6 +118,39 @@ public class CourseBusiness {
         return createdCourse;
     }
 
+    /**
+     * Updates an existing course (Admin only)
+     * @param admin Administrator user
+     * @param id Course ID
+     * @param name New course name
+     * @param description New description
+     * @param duration New duration
+     * @param type New type
+     * @param price New price
+     * @return Updated course
+     */
+    public Course updateCourse(User admin, Long id, String name, String description, int duration, String type, double price){
+        checkAdminRights(admin);
+
+        Course existingCourse = courseDao.findById(id);
+        if (existingCourse == null) {
+            throw new IllegalArgumentException("Course with ID: " + id + " does not exist!");
+        }
+
+        existingCourse.setName(name);
+        existingCourse.setDescription(description);
+        existingCourse.setDuration(duration);
+        existingCourse.setType(type);
+        existingCourse.setPrice(price);
+
+        validateCourse(existingCourse);
+
+        Course updatedCourse = courseDao.update(existingCourse);
+        LOGGER.log(Level.INFO, () -> "Admin " + admin.getLogin() +
+                " updated course ID: " + id);
+
+        return updatedCourse;
+    }
 
     /**
      * Display course details

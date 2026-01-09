@@ -153,6 +153,29 @@ public class CourseBusiness {
     }
 
     /**
+     * Deletes a course (Admin only)
+     * @param admin Administrator user
+     * @param id Course ID to delete
+     * @return true if deletion successful
+     */
+    public boolean deleteCourse(User admin, Long id){
+        checkAdminRights(admin);
+        Course course = courseDao.findById(id);
+
+        if (course == null) {
+            throw new IllegalArgumentException("Course with ID: " + id + " does not exist!");
+        }
+
+        boolean deleted = courseDao.delete(id);
+
+        if  (deleted) {
+            LOGGER.log(Level.INFO, () -> "Course " + id + " deleted successfully!");
+        }
+        return deleted;
+    }
+
+
+    /**
      * Display course details
      * @param course course to display
      */

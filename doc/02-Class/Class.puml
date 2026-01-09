@@ -11,6 +11,8 @@ class Course {
 class User {
   - login : String
   - password : String
+  - role : String
+  + isAdmin() : boolean
 }
 
 class Client {

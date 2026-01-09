@@ -43,4 +43,22 @@ import java.util.logging.Logger;
         }
     }
 
+    /**
+     * Reads course type input
+     * @return "in-person" or "remote"
+     */
+    public static String readCourseType() {
+        while(true){
+            System.out.println("Course type:");
+            System.out.println("1. In-person");
+            System.out.println("2. Remote");
+            int choice = readInt("Select type (1 or 2): ");
+
+            if(choice == 1) return  "IN-PERSON";
+            if(choice == 2) return "REMOTE";
+
+            System.out.println("Invalid choice! Please select 1 or 2!");
+        }
+    }
+
 }

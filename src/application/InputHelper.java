@@ -172,4 +172,21 @@ import java.util.logging.Logger;
         }
     }
 
+    /**
+     * Reads course type input with default value
+     * @param defaultType Default course type
+     * @return User selected type or default
+     */
+    public static String readCourseTypeOrDefault(String defaultType) {
+        System.out.print("Course type [" + defaultType + "] (1 = In-person, 2 = Remote): ");
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) return defaultType;
+        if (input.equals("1")) return "IN-PERSON";
+        if (input.equals("2")) return "REMOTE";
+
+        System.out.println("Invalid input! Using default value: " + defaultType);
+        return defaultType;
+    }
+
 }

@@ -65,7 +65,29 @@ public class CourseDao implements IDao<Course>{
     }
 
     @Override
-    public Course update(Course entity) {
+    public Course update(Course course) {
+        if  (course == null || course.getId() == null || course.getId() <=0) {
+            throw new IllegalArgumentException("Invalid course for update!");
+        }
+
+        String sql = "UPDATE course SET co_name = ?, co_description = ?, co_duration = ?, co_type = ?, co_price = ? WHERE id_Course = ?";
+
+        try(Connection connection = dbConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)){
+
+            ResultSetMapper.mapCourseToUpdateStatement(statement, course);
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, () ->"No course found with ID: " + course.getId() + " !");
+                return null;
+            }
+            LOGGER.log(Level.INFO, () -> "Course " +  course.getId() + " updated successfully!");
+            return course;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, () ->"Error updating course ID: " + course.getId());
+        }
         return null;
     }
 

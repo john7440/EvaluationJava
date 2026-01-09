@@ -130,4 +130,25 @@ import java.util.logging.Logger;
         return input.isEmpty() ? defaultValue : input;
     }
 
+    /**
+     * Reads an integer input with default value
+     * @param prompt Message to display
+     * @param defaultValue Default value if user presses Enter
+     * @return User input or default value
+     */
+    public static int readIntOrDefault(String prompt, int defaultValue) {
+        System.out.print(prompt + " [" + defaultValue + "]: ");
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) return defaultValue;
+
+        try{
+            return Integer.parseInt(input);
+        } catch(NumberFormatException e){
+            System.out.println("Invalid input! Using the default value: " + defaultValue);
+            LOGGER.log(Level.WARNING, "Invalid integer input, using default", e);
+            return defaultValue;
+        }
+    }
+
 }

@@ -1,8 +1,12 @@
 @startuml
 left to right direction
 
+actor Admin
 actor Visitor
 actor User
+
+User -|> Visitor
+Admin -|> User
 
 rectangle "Training Sales System" {
 
@@ -17,20 +21,25 @@ rectangle "Training Sales System" {
  usecase "Place order" as UC6
  usecase "View my orders" as UC7
 
+ usecase "Manage courses" as UC8
+
 }
 
 Visitor -- UC1
 Visitor -- UC2
 Visitor -- UC3
+Visitor -- AUTH
 
-User -|> Visitor
 
 User -- UC5
 User -- UC6
 User -- UC7
 
+Admin -- UC8
+
 UC5 ..> AUTH : <<include>>
 UC6 ..> AUTH : <<include>>
 UC7 ..> AUTH : <<include>>
+UC8 ..> AUTH : <<include>>
 
 @enduml

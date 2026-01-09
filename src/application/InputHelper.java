@@ -1,5 +1,6 @@
 package application;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -14,4 +15,13 @@ import java.util.logging.Logger;
     private InputHelper() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
+
+    /**
+     * Reads a string input from user
+     */
+    public static String readString(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+
 }

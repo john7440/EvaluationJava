@@ -41,7 +41,27 @@ public class CourseDao implements IDao<Course>{
         try( Connection connection = dbConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
+            ResultSetMapper.mapCourseToInsertStatement(statement, course);
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating course failed!");
+            }
+
+            try(ResultSet generatedKeys = statement.getGeneratedKeys()){
+                if (generatedKeys.next()){
+                    course.setId(generatedKeys.getLong(1));
+                    LOGGER.log(Level.INFO, () ->"Course created successfully with ID: " + course.getId());
+                } else {
+                    throw new SQLException("Creating course failed, no ID obtained");
+                }
+            }
+            return  course;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+        return null;
     }
 
     @Override
@@ -51,6 +71,7 @@ public class CourseDao implements IDao<Course>{
 
     @Override
     public boolean delete(Long id) {
+        return false;
     }
 
     @Override

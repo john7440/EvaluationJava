@@ -3,6 +3,7 @@ package business;
 import dao.CourseDao;
 import dao.DaoFactory;
 import entity.Course;
+import entity.User;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -55,6 +56,18 @@ public class CourseBusiness {
         LOGGER.log(Level.INFO, ()->"Found: " + results.size() + " courses matching type: " + type);
         return results;
     }
+
+    /**
+     * Verifies if user has admin rights
+     * @param user User to verify
+     * @throws SecurityException if user is not admin
+     */
+    private void checkAdminRights(User user){
+        if (user == null || !user.isAdmin()) {
+            throw new SecurityException("Access denied: Administrator privileges required!");
+        }
+    }
+
 
     /**
      * Display course details

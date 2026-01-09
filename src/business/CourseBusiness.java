@@ -67,7 +67,40 @@ public class CourseBusiness {
             throw new SecurityException("Access denied: Administrator privileges required!");
         }
     }
-    
+
+    /**
+     * Validates course data
+     * @param course Course to validate
+     * @throws IllegalArgumentException if validation fails
+     */
+    private void validateCourse(Course course){
+        if  (course == null) {
+            throw new IllegalArgumentException("Course cannot be null!");
+        }
+        if (course.getName() == null ||  course.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name is required!");
+        }
+        if (course.getDuration() <= 0) {
+            throw new IllegalArgumentException("Course duration must be positive!");
+        }
+        if (course.getPrice()<= 0) {
+            throw new IllegalArgumentException("Course price must be positive!");
+        }
+        if (course.getType() == null || course.getType().trim().isEmpty()) {
+            throw new IllegalArgumentException("Course type is required!");
+        }
+    }
+
+    /**
+     * Creates a new course (Admin only)
+     * @param admin Administrator user
+     * @param name Course name
+     * @param description Course description
+     * @param duration Duration in days
+     * @param type Type (in-person or remote)
+     * @param price Price in euros
+     * @return Created course
+     */
     public Course createCourse(User admin, String name, String description, int duration, String type, double price){
         checkAdminRights(admin);
 
@@ -77,6 +110,8 @@ public class CourseBusiness {
         course.setDuration(duration);
         course.setType(type);
         course.setPrice(price);
+
+        validateCourse(course);
 
         Course createdCourse = courseDao.save(course);
         LOGGER.log(Level.INFO, ()->"Created course " + createdCourse.getName() + " with id: " + createdCourse.getId());

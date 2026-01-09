@@ -42,6 +42,7 @@ public class AdminMenu {
 
             switch (choice) {
                 case 1 -> viewAllCourses();
+                case 2 -> addNewCourse();
                 default -> System.out.println("Invalid choice! Please try again!");
             }
         }
@@ -68,5 +69,33 @@ public class AdminMenu {
     private void viewAllCourses(){
         List<Course> courses = courseBusiness.getAllCourses();
         courseBusiness.displayCourseList(courses);
+    }
+
+    /**
+     * Adds a new course
+     */
+    private void addNewCourse(){
+        System.out.println("\n========== ADD NEW COURSE ==========");
+
+        try {
+            String name = InputHelper.readString("Course name: ");
+            String description = InputHelper.readString("Course description: ");
+            int duration = InputHelper.readInt("Course duration(in days): ");
+            String type = InputHelper.readCourseType();
+            double price = InputHelper.readDouble("Course price (in €): ");
+
+            Course newCourse = courseBusiness.createCourse(admin, name, description, duration, type, price);
+            System.out.println("\nCourse " + name + " created successfully!");
+            System.out.println(courseBusiness.displayCourseDetails(newCourse));
+
+        } catch (SecurityException e){
+            System.out.println("Access denied! " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Security error", e);
+        } catch (IllegalArgumentException e){
+            System.out.println("Validation Error: "+  e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error creating course: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error creating course!");
+        }
     }
 }

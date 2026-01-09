@@ -43,6 +43,7 @@ public class AdminMenu {
                 case 2 -> addNewCourse();
                 case 3 -> updateCourse();
                 case 4 -> deleteCourse();
+                case 5 -> viewCourseDetails();
                 case 6 -> {
                     System.out.println("Logging out from admin panel...");
                     running = false;
@@ -118,7 +119,7 @@ public class AdminMenu {
 
             Course existingCourse = courseBusiness.getCourseById(id);
             if (existingCourse == null){
-                System.out.println("Course with ID: " + id + " not found!");
+                System.out.println("Course: " + id + " not found");
                 return;
             }
 
@@ -182,6 +183,28 @@ public class AdminMenu {
         }  catch (Exception e) {
             System.out.println("Error deleting course: " + e.getMessage());
             LOGGER.log(Level.SEVERE, "Error deleting course", e);
+        }
+    }
+
+    /**
+     * Views detailed information about a course
+     */
+    private void viewCourseDetails(){
+        System.out.println("\n========== COURSE DETAILS ==========");
+
+        try{
+            long id = InputHelper.readLong("Course ID to details: ");
+
+            Course existingCourse = courseBusiness.getCourseById(id);
+
+            if (existingCourse == null){
+                System.out.println("Course with ID: " + id + " not found!");
+            } else {
+                System.out.println(courseBusiness.displayCourseDetails(existingCourse));
+            }
+        }  catch (Exception e){
+            System.out.println("Error retrieving course: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error viewing course details", e);
         }
     }
 }

@@ -93,7 +93,29 @@ public class CourseDao implements IDao<Course>{
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid course id!");
+        }
+
+        String sql = "DELETE FROM course WHERE id_Course = ?";
+
+        try(Connection connection = dbConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, id);
+            int affectedRows = statement.executeUpdate();
+
+            boolean deleted = affectedRows > 0;
+
+            if (deleted) {
+                LOGGER.log(Level.INFO, () -> "Course " + id + " deleted successfully!");
+            } else {
+                LOGGER.log(Level.WARNING, () -> "Course " + id + " could not be deleted!");
+            }
+            return deleted;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, () ->"Error deleting course ID: " + id);
+        }
     }
 
     @Override

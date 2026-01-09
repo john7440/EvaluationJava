@@ -15,8 +15,10 @@ A console-based Java application for managing and selling training courses, deve
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Design Patterns](#design-patterns)
+- [Features Details](#features-details)
 - [UML Diagrams](#uml-diagrams)
 - [Code Quality](#code-quality)
+- [Troubleshooting](#troubleshooting)
 
 ## Overview
 
@@ -95,14 +97,20 @@ Note : The MariaDB JDBC driver (mariadb-java-client.jar) is already included in 
 
 ## Database Setup
 
-Copy and paste the content Of SQL -> ScriptSQL.txt into a MySQL Client, or use:
+### Option 1 : Using MySQL Client
+1. Open your MySQL/MariaDB client
+2. Copy and paste the content of `doc/SQL/ScriptSQL.txt`
+3. Execute the script
+
+### Option 2: Comman line
 ```bash
-mysql -u training_user -p training_sales_db < doc/SQL/ScriptSQL.txt
+mysql -u root -p < doc/SQL/ScriptSQL.txt
 ```
+Note: The script will create the database, user, and populate data automatically
 
 ## Configuration
 
-Create or edit the `resources/database.properties` file:
+The database configuration is located in `resources/database.properties`:
 ```bash
 db.url=jdbc:mariadb://localhost:3306/training_sales_db
 db.user=training_user
@@ -223,6 +231,17 @@ This project implements several design patterns:
  - Controller: Business classes
  - View: Application layer (console)
 
+## Features Details
+
+### Admin Panel
+Administrators have access to a dedicated panel for course management:
+- **CRUD operations** on courses (Create, Read, Update, Delete)
+- **Validation** of course data before saving
+- **Logging** of all administrative actions
+- **Security checks** to ensure only admins can modify courses
+
+Access: Login with admin account and select "Admin Panel" from user menu
+
 # UML Diagrams
 
 **Use Case Diagram**
@@ -259,6 +278,23 @@ See **doc/** folder for complete UML diagrams
 - Utility classes with private constructors
 - No code duplication
 - Proper logging
+
+## Troubleshooting
+
+### Database connection issues
+- Verify MariaDB service is running
+- Check `resources/database.properties` credentials
+- Ensure database `training_sales_db` exists
+- Verify user `training_user` has proper permissions
+
+### JDBC Driver not found
+- Ensure `mariadb-java-client.jar` is in `lib/` folder
+- In IntelliJ: Right-click `lib/` → Add as Library
+
+### Application won't compile
+- Verify Java JDK 8+ is installed
+- Check all dependencies are properly loaded
+- Try: File → Invalidate Caches / Restart in IntelliJ
 
 ## License
 

@@ -13,6 +13,7 @@ A console-based Java application for managing and selling training courses, deve
 - [Database Setup](#database-setup)
 - [Configuration](#configuration)
 - [Usage](#usage)
+- [Testing](#testing)
 - [Project Structure](#project-structure)
 - [Design Patterns](#design-patterns)
 - [Features Details](#features-details)
@@ -137,10 +138,21 @@ Then run (for Windows users):
 ```bash
 java -cp "bin;resources;lib/*" application.MainApp
 ```
+## Testing
+
+### Quick Start Test Scenario
+1. Run the application
+2. Login as **admin** 
+3. Select option **10** (Admin Panel)
+4. Try adding a new course
+5. Logout and login as **testuser** 
+6. Browse courses and add some to cart
+7. Place an order (you have to put client information)
+   
 #### Test accounts
 For testing purposes, you already have 3 accounts:
-- admin : admin123 (ADMIN)
-- testuser : password (USER)
+- **admin** : admin123 (ADMIN)
+- **testuser** : password (USER)
 - john.doe : test2026 (USER)
 
 #### Navigation

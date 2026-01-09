@@ -2,6 +2,7 @@ package dao;
 
 import entity.*;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -29,6 +30,20 @@ public final class ResultSetMapper {
         course.setType(rs.getString("co_type"));
         course.setPrice(rs.getDouble("co_price"));
         return course;
+    }
+
+    /**
+     * Map Course entity to PreparedStatement for INSERT operation
+     * @param statement PreparedStatement to populate
+     * @param course Course entity to map
+     * @throws SQLException if database access error occurs
+     */
+    public static void mapCourseToInsertStatement(PreparedStatement statement, Course course) throws SQLException {
+        statement.setString(1, course.getName());
+        statement.setString(2, course.getDescription());
+        statement.setInt(3, course.getDuration());
+        statement.setString(4, course.getType());
+        statement.setDouble(5, course.getPrice());
     }
 
     /**
@@ -122,5 +137,7 @@ public final class ResultSetMapper {
 
         return orderLine;
     }
+
+
 
 }

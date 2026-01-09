@@ -31,8 +31,17 @@ public class CourseDao implements IDao<Course>{
     }
 
     @Override
-    public Course save(Course entity){
-        return null;
+    public Course save(Course course){
+        if (course == null) {
+            throw new IllegalArgumentException("Course cannot be null");
+        }
+
+        String sql = "INSERT INTO course(co_name, co_description, co_duration, co_type, co_price)VALUES (?,?,?,?,?)";
+
+        try( Connection connection = dbConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+
+        }
     }
 
     @Override
@@ -42,7 +51,6 @@ public class CourseDao implements IDao<Course>{
 
     @Override
     public boolean delete(Long id) {
-        return false;
     }
 
     @Override

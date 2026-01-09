@@ -47,6 +47,21 @@ public final class ResultSetMapper {
     }
 
     /**
+     * Map Course entity to PreparedStatement for UPDATE operation
+     * @param statement PreparedStatement to populate
+     * @param course Course entity to map
+     * @throws SQLException if database access error occurs
+     */
+    public static void mapCourseToUpdateStatement(PreparedStatement statement, Course course) throws SQLException {
+        statement.setString(1, course.getName());
+        statement.setString(2, course.getDescription());
+        statement.setInt(3, course.getDuration());
+        statement.setString(4, course.getType());
+        statement.setDouble(5, course.getPrice());
+        statement.setLong(6, course.getId());
+    }
+
+    /**
      * Map ResultSet to User object
      */
     public static User mapToUser(ResultSet rs) throws SQLException {

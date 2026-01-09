@@ -78,4 +78,23 @@ import java.util.logging.Logger;
         }
     }
 
+    /**
+     * Reads a boolean input (yes/no)
+     * @param prompt Message to display
+     * @return true for yes, false for no
+     */
+    public static boolean readBoolean(String prompt){
+        while(true){
+            String input = readString(prompt + " (yes/no): ").toLowerCase();
+
+            if(input.equals("yes") || input.equals("y")){
+                return true;
+            }
+            if (input.equals("no") || input.equals("n")) {
+                return false;
+            }
+            System.out.println("Invalid input! Please enter 'yes' or 'no'!");
+        }
+    }
+
 }

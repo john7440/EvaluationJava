@@ -184,13 +184,13 @@ public class CourseBusiness {
             return "Course not found";
         }
 
-        return "\n=============== Course Details ================" +
-                "ID: " + course.getId() +
-                "Name: " + course.getName() +
-                "Description: " + course.getDescription() +
-                "Duration: " + course.getDuration() + " days" +
-                "Type: " + course.getType() +
-                "Price: " + String.format("%.2f", course.getPrice()) + " €" +
+        return "\n=============== Course Details ================\n" +
+                "ID: " + course.getId() + "\n" +
+                "Name: " + course.getName() + "\n" +
+                "Description: " + course.getDescription() + "\n" +
+                "Duration: " + course.getDuration() + " days" + "\n" +
+                "Type: " + course.getType() + "\n" +
+                "Price: " + String.format("%.2f", course.getPrice()) + " €" +"\n" +
                 "==================================================\n";
     }
 

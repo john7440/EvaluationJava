@@ -151,4 +151,25 @@ import java.util.logging.Logger;
         }
     }
 
+    /**
+     * Reads a double input with default value
+     * @param prompt Message to display
+     * @param defaultValue Default value if user presses Enter
+     * @return User input or default value
+     */
+    public static double readDoubleOrDefault(String prompt, double defaultValue) {
+        System.out.print(prompt + " [" + defaultValue + "]: ");
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) return defaultValue;
+
+        try{
+            return Double.parseDouble(input);
+        }  catch(NumberFormatException e){
+            System.out.println("Invalid input! Using default value: " + defaultValue);
+            LOGGER.log(Level.WARNING, "Invalid double input, using default", e);
+            return defaultValue;
+        }
+    }
+
 }

@@ -7,6 +7,7 @@ public class User {
     private Long id;
     private String login;
     private String password;
+    private String role;  // USER by default or ADMIN
 
     public User() {
     }
@@ -44,10 +45,21 @@ public class User {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
     // -----------------------------
+
+    public boolean isAdmin() {
+        return "ADMIN".equals(this.role);
+    }
 
     @Override
     public String toString() {
-        return "User Id: " + id + "\n" + "Login: " + login;
+        return "User Id: " + id + "\n" + "Login: " + login + "\n" + "Role: " + role;
     }
 }

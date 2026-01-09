@@ -38,6 +38,14 @@ This application allows users to browse training courses, manage a shopping cart
 - View order history
 - Logout
 
+### For Admin
+- View all courses
+- Add a new course
+- Update an existing course
+- Delete an existing course
+- View course details
+- Logout
+
 ### Course Characteristics
 - Name
 - Description
@@ -122,7 +130,10 @@ Then run (for Windows users):
 java -cp "bin;resources;lib/*" application.MainApp
 ```
 #### Test accounts
-For testing purposes, you can create a new account through the application
+For testing purposes, you already have 3 accounts:
+- admin : admin123 (ADMIN)
+- testuser : password (USER)
+- john.doe : test2026 (USER)
 
 #### Navigation
 1. **Main Menu**: Choose between visitor and user options
@@ -137,6 +148,8 @@ training-sales-app/
 ├── src/
 │   ├── application/
 │   │   ├── MainApp.java              # Entry point
+│   │   ├── AdminMenu.java            # Admin menu display and logic
+│   │   ├── InputHelper.java          # Helper class for input validation
 │   │   ├── MenuDisplay.java          # Menu display utility
 │   │   └── MenuHandler.java          # Menu logic handler
 │   ├── business/
@@ -179,7 +192,7 @@ training-sales-app/
 │ │ ├── 1-OrderSequence.puml          # Place order sequence diagram (PlantUML)
 │ │ └── TD01-PlaceOrder.png           # Place order textual description
 │ ├── 04-MCD/
-│ │ └── mcdV1.png                     # Conceptual data model (MCD)
+│ │ └── mcdv3.png                     # Conceptual data model (MCD)
 │ ├── SQL/
 │ │ └── ScriptSQL.txt                 # SQL creation and insertion scripts
 │ └── Specifications.pdf              # Functional specifications document
@@ -223,6 +236,9 @@ User (extends Visitor):
 - Manage cart
 - Place order
 - View my orders
+
+Admin (extends User):
+- Manage courses
 ```
 Key Relationships
 - User 1 -- 0..1 Cart: A user can have one cart

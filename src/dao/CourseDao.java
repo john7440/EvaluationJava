@@ -116,6 +116,7 @@ public class CourseDao implements IDao<Course>{
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, () ->"Error deleting course ID: " + id);
         }
+        return false;
     }
 
     @Override

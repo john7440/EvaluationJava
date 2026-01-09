@@ -43,6 +43,14 @@ public class AdminMenu {
             switch (choice) {
                 case 1 -> viewAllCourses();
                 case 2 -> addNewCourse();
+                case 6 -> {
+                    System.out.println("Logging out from admin panel...");
+                    running = false;
+                }
+                case 0 -> {
+                    System.out.println("Thank you for using our Application! Goodbye!");
+                    System.exit(0);
+                }
                 default -> System.out.println("Invalid choice! Please try again!");
             }
         }

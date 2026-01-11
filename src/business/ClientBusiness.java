@@ -1,12 +1,23 @@
 package business;
 
 import dao.ClientDao;
+import entity.Client;
 
 public class ClientBusiness {
     private final ClientDao clientDao;
 
     public ClientBusiness(ClientDao clientDao) {
         this.clientDao = clientDao;
+    }
+
+    public Client createClient(Client client) {
+        validateName(client.getFirstName(), "First Name");
+        validateName(client.getLastName(), "Last Name");
+        validateEmail(client.getEmail());
+        validatePhoneNumber( client.getPhoneNumber());
+        validateAddress(client.getAddress());
+
+        return clientDao.save(client);
     }
 
     // -------------------------------------
@@ -47,5 +58,5 @@ public class ClientBusiness {
             throw new IllegalArgumentException("Phone number must be between 10 and 15 numbers!");
         }
     }
-    
+
 }

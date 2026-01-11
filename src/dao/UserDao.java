@@ -23,7 +23,7 @@ public class UserDao implements IDao<User>{
 
     //--------------------------------------------------------
     // methods
-    
+
     @Override
     public User save(User user) {
         String sql = "INSERT INTO user(u_login, u_password) VALUES (?, ?)";

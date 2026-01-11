@@ -6,8 +6,8 @@ import entity.Client;
 public class ClientBusiness {
     private final ClientDao clientDao;
 
-    public ClientBusiness(ClientDao clientDao) {
-        this.clientDao = clientDao;
+    public ClientBusiness() {
+        this.clientDao = new ClientDao();
     }
 
     public Client createClient(Client client) {
@@ -16,10 +16,6 @@ public class ClientBusiness {
         validateEmail(client.getEmail());
         validatePhoneNumber( client.getPhoneNumber());
         validateAddress(client.getAddress());
-
-        if (clientDao.findByEmail(client.getEmail()) != null) {
-            throw new IllegalArgumentException("Email already exists!");
-        }
 
         return clientDao.save(client);
     }
@@ -34,7 +30,7 @@ public class ClientBusiness {
         if (name.length() < 3 || name.length() > 50) {
             throw new IllegalArgumentException( fieldName + " must be between 3 and 50 characters!");
         }
-        if (name.matches("^[a-zA-ZÀ-ÿ\\s'-]+$")){
+        if (!name.matches("^[a-zA-ZÀ-ÿ\\s'-]+$")){
             throw new IllegalArgumentException(fieldName + " cannot contain special characters or digits!");
         }
     }

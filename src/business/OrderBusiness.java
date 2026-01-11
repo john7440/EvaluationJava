@@ -13,9 +13,11 @@ public class OrderBusiness {
     private static final Logger LOGGER = Logger.getLogger(OrderBusiness.class.getName());
     private final OrderDao orderDao;
     private final ClientDao clientDao;
+    private final ClientBusiness clientBusiness;
     private final CartBusiness cartBusiness;
 
     public OrderBusiness() {
+        this.clientBusiness = new ClientBusiness();
         this.orderDao = DaoFactory.getOrderDao();
         this.clientDao = DaoFactory.getClientDao();
         this.cartBusiness = new CartBusiness();
@@ -39,18 +41,26 @@ public class OrderBusiness {
                 return null;
         }
 
+        Client finalClient;
+
         //check if client exists
         Client existingClient = clientDao.findByEmail(client.getEmail());
         if (existingClient != null) {
-            LOGGER.log(Level.WARNING, () ->"Using existing client: " +  existingClient);
+            LOGGER.log(Level.INFO, () ->"Using existing client: " +  existingClient.getEmail());
+            finalClient = existingClient;
         } else {
-            clientDao.save(client);
-            LOGGER.log(Level.WARNING, () ->"Client with email: " + client.getEmail() + " has been saved!");
+            try {
+                finalClient = clientBusiness.createClient(client);
+                LOGGER.log(Level.INFO, () ->"Client with email: " + finalClient.getEmail() + " has been saved!");
+            } catch (IllegalArgumentException e){
+                LOGGER.log(Level.SEVERE, () ->"Invalid client data: " + e.getMessage());
+                return null;
+            }
         }
 
-        Order order = new Order(user, client);
+        Order order = new Order(user, finalClient);
 
-        //we convert cart lines to order lines
+        //converting cart lines to order lines
         for (CartLine cartLine : cart.getCartLines()) {
             OrderLine orderLine = new OrderLine(
                     order,

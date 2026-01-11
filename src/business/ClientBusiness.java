@@ -30,5 +30,13 @@ public class ClientBusiness {
         }
     }
 
+    private static void validateAddress(String address) {
+        if (address != null && (address.length() < 10 || address.length() > 255)) {
+            throw new IllegalArgumentException("Address must be between 10 and 255 characters!");
+        }
+    }
+
+
+
 
 }

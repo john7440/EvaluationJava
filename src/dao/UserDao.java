@@ -11,25 +11,19 @@ import java.util.logging.Logger;
 
 /**
  * Dao for User entity
- * Singleton pattern is intentionally used
  */
-@SuppressWarnings("java:S6548")
+
 public class UserDao implements IDao<User>{
     private static final Logger LOGGER = Logger.getLogger(UserDao.class.getName());
     private final DatabaseConfig dbConfig;
 
-    private UserDao() {
+    public UserDao() {
         this.dbConfig = DatabaseConfig.getInstance();
     }
 
-    private static class SingletonHolder {
-        private static final UserDao INSTANCE = new UserDao();
-    }
-
-    public static UserDao getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
-
+    //--------------------------------------------------------
+    // methods
+    
     @Override
     public User save(User user) {
         String sql = "INSERT INTO user(u_login, u_password) VALUES (?, ?)";

@@ -21,7 +21,7 @@ public class OrderDao implements IDao<Order>{
     public OrderDao(){
         this.dbConfig = DatabaseConfig.getInstance();
     }
-    
+
     //--------------------------------------------------
     //methods
 

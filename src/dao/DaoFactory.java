@@ -10,7 +10,7 @@ public class DaoFactory {
     }
 
     public static UserDao getUserDao(){
-        return UserDao.getInstance();
+        return new UserDao();
     }
 
     public static ClientDao getClientDao(){

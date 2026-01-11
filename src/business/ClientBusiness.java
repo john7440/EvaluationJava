@@ -23,4 +23,12 @@ public class ClientBusiness {
             throw new IllegalArgumentException(fieldName + " cannot contain special characters or digits!");
         }
     }
+
+    private static void validateEmail(String email) {
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+    }
+
+
 }

@@ -14,7 +14,7 @@ public class DaoFactory {
     }
 
     public static ClientDao getClientDao(){
-        return ClientDao.getInstance();
+        return new ClientDao();
     }
 
     public static CourseDao getCourseDao(){

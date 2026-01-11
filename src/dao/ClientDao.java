@@ -10,23 +10,14 @@ import java.util.logging.Logger;
 
 /**
  * Dao  for Client entity
- * Singleton pattern is used intentionally
  */
-@SuppressWarnings("java:S6548")
+
 public class ClientDao implements IDao<Client> {
     private static final Logger LOGGER = Logger.getLogger(ClientDao.class.getName());
     private final DatabaseConfig dbConfig;
 
-    private ClientDao(){
+    public ClientDao(){
         this.dbConfig = DatabaseConfig.getInstance();
-    }
-
-    private static class SingletonHolder{
-        private static final ClientDao INSTANCE = new ClientDao();
-    }
-
-    public static ClientDao getInstance(){
-        return ClientDao.SingletonHolder.INSTANCE;
     }
 
     public Client findByEmail(String email){

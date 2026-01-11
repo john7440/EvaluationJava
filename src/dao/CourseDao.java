@@ -11,23 +11,14 @@ import java.util.logging.Logger;
 
 /**
 * Dao for Course entity
- * Singleton pattern is used intentionally
 **/
-@SuppressWarnings("java:S6548")
+
 public class CourseDao implements IDao<Course>{
     private static final Logger LOGGER = Logger.getLogger(CourseDao.class.getName());
     private final DatabaseConfig dbConfig;
 
-    private CourseDao() {
+    public CourseDao() {
         this.dbConfig = DatabaseConfig.getInstance();
-    }
-
-    private static class SingletonHolder {
-        private static final CourseDao INSTANCE = new CourseDao();
-    }
-
-    public static CourseDao getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override
@@ -83,7 +74,7 @@ public class CourseDao implements IDao<Course>{
                 LOGGER.log(Level.WARNING, () ->"No course found with ID: " + course.getId() + " !");
                 return null;
             }
-            LOGGER.log(Level.INFO, () -> "Course " +  course.getId() + " updated successfully!");
+            LOGGER.log(Level.INFO, () -> "The course " +  course.getId() + " has been updated successfully!");
             return course;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, () ->"Error updating course ID: " + course.getId());

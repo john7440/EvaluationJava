@@ -12,23 +12,14 @@ import java.util.logging.Logger;
 
 /**
  * Dao for Cart entity
- * Singleton pattern is used intentionally
  */
-@SuppressWarnings("java:S6548")
+
 public class CartDao implements IDao<Cart> {
     private static final Logger LOGGER = Logger.getLogger(CartDao.class.getName());
     private final DatabaseConfig dbConfig;
 
-    private CartDao(){
+    public CartDao(){
         this.dbConfig = DatabaseConfig.getInstance();
-    }
-
-    private static class SingletonHolder{
-        private static final CartDao INSTANCE = new CartDao();
-    }
-
-    public static CartDao getInstance(){
-        return SingletonHolder.INSTANCE;
     }
 
     //------------------------------------------

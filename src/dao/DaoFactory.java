@@ -22,7 +22,7 @@ public class DaoFactory {
     }
 
     public static CartDao getCartDao(){
-        return CartDao.getInstance();
+        return new CartDao();
     }
 
     public static OrderDao getOrderDao(){

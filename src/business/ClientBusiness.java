@@ -17,6 +17,10 @@ public class ClientBusiness {
         validatePhoneNumber( client.getPhoneNumber());
         validateAddress(client.getAddress());
 
+        if (clientDao.findByEmail(client.getEmail()) != null) {
+            throw new IllegalArgumentException("Email already exists!");
+        }
+
         return clientDao.save(client);
     }
 

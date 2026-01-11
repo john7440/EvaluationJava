@@ -26,6 +26,6 @@ public class DaoFactory {
     }
 
     public static OrderDao getOrderDao(){
-        return OrderDao.getInstance();
+        return new OrderDao();
     }
 }

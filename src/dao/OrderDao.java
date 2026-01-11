@@ -12,24 +12,16 @@ import java.util.logging.Logger;
 
 /**
  * Dao for Order entity
- * Singleton pattern is intentionally used
  */
-@SuppressWarnings("java:S6548")
+
 public class OrderDao implements IDao<Order>{
     private static final Logger LOGGER = Logger.getLogger(OrderDao.class.getName());
     private final DatabaseConfig dbConfig;
 
-    private OrderDao(){
+    public OrderDao(){
         this.dbConfig = DatabaseConfig.getInstance();
     }
-
-    private static class SingletonHolder {
-        private static final OrderDao INSTANCE = new OrderDao();
-    }
-
-    public static OrderDao getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
+    
     //--------------------------------------------------
     //methods
 

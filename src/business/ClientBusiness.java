@@ -36,7 +36,16 @@ public class ClientBusiness {
         }
     }
 
-
-
-
+    private static void validatePhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be empty!");
+        }
+        if (!phoneNumber.matches("^\\d+$")){
+            throw new IllegalArgumentException("Invalid phone number");
+        }
+        if (phoneNumber.length() < 10|| phoneNumber.length() > 15) {
+            throw new IllegalArgumentException("Phone number must be between 10 and 15 numbers!");
+        }
+    }
+    
 }

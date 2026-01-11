@@ -140,6 +140,19 @@ java -cp "bin;resources;lib/*" application.MainApp
 ```
 ## Testing
 
+#### Navigation
+1. **Main Menu**: Choose between visitor and user options
+2. **Browse Courses**: View all courses or search/filter
+3. **Cart Management**: Add/remove courses (requires login)
+4. **Place Order**: Provide client information and confirm
+5. **Order History**: View past orders (requires login)
+   
+#### Test accounts
+For testing purposes, you already have 3 accounts:
+- **admin** : admin123 (ADMIN)
+- **testuser** : password (USER)
+- john.doe : test2026 (USER)
+
 ### Quick Start Test Scenario
 1. Run the application
 2. Login as **admin** 
@@ -148,19 +161,6 @@ java -cp "bin;resources;lib/*" application.MainApp
 5. Logout and login as **testuser** 
 6. Browse courses and add some to cart
 7. Place an order (you have to put client information)
-   
-#### Test accounts
-For testing purposes, you already have 3 accounts:
-- **admin** : admin123 (ADMIN)
-- **testuser** : password (USER)
-- john.doe : test2026 (USER)
-
-#### Navigation
-1. **Main Menu**: Choose between visitor and user options
-2. **Browse Courses**: View all courses or search/filter
-3. **Cart Management**: Add/remove courses (requires login)
-4. **Place Order**: Provide client information and confirm
-5. **Order History**: View past orders (requires login)
 
 ## Project Structure
 ```text

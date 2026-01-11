@@ -6,6 +6,7 @@ A console-based Java application for managing and selling training courses, deve
 
 - [Overview](#overview)
 - [Features](#features)
+- [Features Details](#features-details)
 - [Architecture](#architecture)
 - [Technologies](#technologies)
 - [Prerequisites](#prerequisites)
@@ -16,7 +17,6 @@ A console-based Java application for managing and selling training courses, deve
 - [Testing](#testing)
 - [Project Structure](#project-structure)
 - [Design Patterns](#design-patterns)
-- [Features Details](#features-details)
 - [UML Diagrams](#uml-diagrams)
 - [Code Quality](#code-quality)
 - [Troubleshooting](#troubleshooting)
@@ -55,6 +55,17 @@ This application allows users to browse training courses, manage a shopping cart
 - Duration (in days)
 - Type (In-person or Remote)
 - Price
+
+## Features Details
+
+### Admin Panel
+Administrators have access to a dedicated panel for course management:
+- **CRUD operations** on courses (Create, Read, Update, Delete)
+- **Validation** of course data before saving
+- **Logging** of all administrative actions
+- **Security checks** to ensure only admins can modify courses
+
+Access: Login with admin account and select "Admin Panel" from user menu
 
 ## Architecture
 The application follows a **multi-layered architecture**:
@@ -174,6 +185,7 @@ training-sales-app/
 │   │   └── MenuHandler.java          # Menu logic handler
 │   ├── business/
 │   │   ├── UserBusiness.java         # User business logic
+│   │   ├── ClientBusiness.java       # Client business logic
 │   │   ├── CourseBusiness.java       # Course business logic
 │   │   ├── CartBusiness.java         # Cart business logic
 │   │   └── OrderBusiness.java        # Order business logic
@@ -225,9 +237,8 @@ training-sales-app/
 This project implements several design patterns:
 
 1. **Singleton Pattern**
- - Classes: All DAO classes, DatabaseConfig
+ - Classe: DatabaseConfig
  - Purpose: Ensure only one instance exists
- - Implementation: Thread-safe holder pattern
 
 2. **Factory Pattern**
  - Class: DaoFactory
@@ -242,17 +253,6 @@ This project implements several design patterns:
  - Model: Entity classes
  - Controller: Business classes
  - View: Application layer (console)
-
-## Features Details
-
-### Admin Panel
-Administrators have access to a dedicated panel for course management:
-- **CRUD operations** on courses (Create, Read, Update, Delete)
-- **Validation** of course data before saving
-- **Logging** of all administrative actions
-- **Security checks** to ensure only admins can modify courses
-
-Access: Login with admin account and select "Admin Panel" from user menu
 
 # UML Diagrams
 
